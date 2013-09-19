@@ -16,3 +16,15 @@ VIM
         $ git clone http://github.com/gmarik/vundle.git ~/.vim/vundle.git
     - Command to download and install plugins:
         $ vim +BundleInstall +qall
+
+* Powerline:
+    - OBS: In order for powerline to work in Debian, install vim-nox package:
+        # apt-get install vim-nox
+    - Move PowerlineSymbols font to fonts directory:
+        $ mkdir ~/.fonts        # create if it does not exist
+        $ cp ~/.vim/bundle/powerline/font/PowerlineSymbols.otf ~/.fonts/
+    - Reload font cache:
+        $ fc-cache -vf ~/.fonts
+    - Move 10-powerline-symbols.conf to ~/.fonts.conf.d/ or ~/.config/fontconfig/conf.d/
+        $ mkdir ~/.config/fontconfig/conf.d/            # or ~/.fonts.conf.d/
+        $ cp ~/.vim/bundle/powerline/font/10-powerline-symbols.conf ~/.config/fontconfig/conf.d/
