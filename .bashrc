@@ -2,6 +2,19 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+# Colors:
+RED="\[\033[0;31m\]"
+YELLOW="\[\033[1;33m\]"
+GREEN="\[\033[0;32m\]"
+BLUE="\[\033[1;34m\]"
+LIGHT_RED="\[\033[1;31m\]"
+LIGHT_GREEN="\[\033[1;32m\]"
+WHITE="\[\033[1;37m\]"
+GRAY="\[\033[01;30m\]"
+LIGHT_GRAY="\[\033[0;37m\]"
+COLOR_NONE="\[\e[0m\]"
+COLOR_DEFAULT="\[\033[00m\]"
+
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
@@ -10,7 +23,7 @@ esac
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
-HISTCONTROL=ignoreboth
+#HISTCONTROL=ignoreboth
 
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -26,6 +39,9 @@ shopt -s checkwinsize
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
 #shopt -s globstar
+
+# Append command to history as soon as it is executed
+PROMPT_COMMAND='history -a ; history -n'
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -56,11 +72,35 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
+# VirtualEnv indicator
+if test -z "$VIRTUAL_ENV"; then
+    PY_VIRTUALENV=""
+else
+    PY_VIRTUALENV="[`basename \"$VIRTUAL_ENV\"`] "
+fi
+
+# GIT branch
+if declare -fF __git_ps1 > /dev/null; then
+    GIT_BRANCH='$(__git_ps1 " [%s]")'
+else
+    GIT_BRANCH=''
+fi
+
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;30m\]$(__git_ps1 " [%s]") \[\033[00m\]\$ '
+    PS1="${debian_chroot:+($debian_chroot)}"
+    PS1="${PS1}${GREEN}${PY_VIRTUALENV}"                        # VirtualEnv
+    PS1="${PS1}${LIGHT_RED}\u@\h${COLOR_DEFAULT}:${BLUE}\w"     # u@h:w
+    PS1="${PS1}${GRAY}${GIT_BRANCH} ${COLOR_DEFAULT}\$ "        # Git Branch
+
+    #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;30m\]$(__git_ps1 " [%s]") \[\033[00m\]\$ '
     #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1="${debian_chroot:+($debian_chroot)}"
+    PS1="${PS1}${PY_VIRTUALENV}"            # VirtualEnv
+    PS1="${PS1}\u@\h:\w"                    # u@h:w
+    PS1="${PS1}${GIT_BRANCH} \$ "           # Git Branch
+
+    #PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
 
@@ -114,17 +154,19 @@ if ! shopt -oq posix; then
     fi
 fi
 
-## ICECC
-#if [ -d /usr/lib/icecc/bin ]; then
-#    export ICECC_VERSION=$HOME/.icecc-build-native.tar.gz
-#fi
-#
-## Android NDK
-#if [ -d /opt/android-ndk-r8b ] ; then
-#    PATH=/opt/android-ndk-r8b:$PATH
-#fi
-#
-## Android SDK
-#if [ -d /opt/android-sdk ] ; then
-#   PATH=/opt/android-sdk/platform-tools:/opt/android-sdk/tools:$PATH
-#fi
+# ICECC
+if [ -d /usr/lib/icecc/bin ]; then
+    export ICECC_VERSION=$HOME/.icecc/.icecream.tar.gz
+    export PATH=/usr/lib/icecc/bin:$PATH
+    alias make='CC="icecc" make'
+fi
+
+# Android NDK
+if [ -d /opt/android-ndk-r8b ] ; then
+    PATH=/opt/android-ndk-r8b:$PATH
+fi
+
+# Android SDK
+if [ -d /opt/android-sdk ] ; then
+   PATH=/opt/android-sdk/platform-tools:/opt/android-sdk/tools:$PATH
+fi
