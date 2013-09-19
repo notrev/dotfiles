@@ -20,18 +20,6 @@ set expandtab 	        " Changes shifttab for spaces
 set softtabstop=4       " let backspace delete indent
 set pastetoggle=<F2>    " Turns paste mode on or off. Used to paste text in vim
 
-"" Autocompletion for PHP
-"if has("autocmd")
-"    autocmd FileType php set complete-=k/home/$USER/.vim/doc/php-functions
-"            \ complete+=k/home/$USER/.vim/doc/php-functions
-"endif
-"
-""Autocompletion for Python
-"if has("autocmd")
-"    autocmd FileType python set complete+=k/home/$USER/.vim/doc/pydiction
-"            \ iskeyword+=.,(
-"endif
-
 " For editing PO files
 if has('autocmd')
     autocmd FileType po setlocal spell spelllang=pt
@@ -56,20 +44,36 @@ highlight Search ctermbg=blue ctermfg=white
 nmap ,h :nohl<CR>
 
 " Highlight as Error characters beyond column 80
-highlight MaxChars ctermbg=red guibg=red
-"command Hl80 :match MaxChars /\%81v/
-command Nohl80 :match None /\%81v/
+"highlight MaxChars ctermbg=red guibg=red
+"command Hl80 :match MaxChars /\%>80v/
+"command Nohl80 :match None /\%>80v/
 
 " Highlight extra whitespaces and max chars
 " Thanks to kurkale6ka, from #vim @ freenode
+"if has('autocmd')
+"    highlight ExtraWSAndMaxChars ctermbg=red guibg=red
+"    match ExtraWSAndMaxChars /\%>81v\|\s\+$/
+"    autocmd BufWinEnter * match ExtraWSAndMaxChars /\%>81v\|\s\+$/
+"    autocmd InsertEnter * match ExtraWSAndMaxChars /\%>81v\|\s\+\%#\@<!$/
+"    autocmd InsertLeave * match ExtraWSAndMaxChars /\%>81v\|\s\+$/
+"
+"    if version >= 702
+"        autocmd BufWinLeave * call clearmatches()
+"    endif
+"endif
+
 if has('autocmd')
-    highlight ExtraWSAndMaxChars ctermbg=red guibg=red
-    match ExtraWSAndMaxChars /\%>81v\|\s\+$/
-    autocmd BufWinEnter * match ExtraWSAndMaxChars /\%>81v\|\s\+$/
-    autocmd InsertEnter * match ExtraWSAndMaxChars /\%>81v\|\s\+\%#\@<!$/
-    autocmd InsertLeave * match ExtraWSAndMaxChars /\%>81v\|\s\+$/
+    highlight ExtraWSAndMaxChars ctermbg=red guibg=red ctermfg=white
+    match ExtraWSAndMaxChars /\%81v\|\s\+$/
+    autocmd BufWinEnter * match ExtraWSAndMaxChars /\%81v\|\s\+$/
+    autocmd InsertEnter * match ExtraWSAndMaxChars /\%81v\|\s\+\%#\@<!$/
+    autocmd InsertLeave * match ExtraWSAndMaxChars /\%81v\|\s\+$/
 
     if version >= 702
         autocmd BufWinLeave * call clearmatches()
     endif
 endif
+
+" Hightlight autocompletion window - modifying colors
+highlight Pmenu ctermbg=DarkGrey ctermfg=LightGrey
+highlight PmenuSel ctermbg=DarkBlue ctermfg=White

@@ -15,7 +15,7 @@ VIM
     - Command to download and install Vundle:
         $ git clone http://github.com/gmarik/vundle.git ~/.vim/vundle.git
     - Command to download and install plugins:
-        $ vim +BundleInstall +qall
+        $ vim +BundleInstall
 
 * Powerline:
     - OBS: In order for powerline to work in Debian, install vim-nox package:
@@ -28,3 +28,13 @@ VIM
     - Move 10-powerline-symbols.conf to ~/.fonts.conf.d/ or ~/.config/fontconfig/conf.d/
         $ mkdir ~/.config/fontconfig/conf.d/            # or ~/.fonts.conf.d/
         $ cp ~/.vim/bundle/powerline/font/10-powerline-symbols.conf ~/.config/fontconfig/conf.d/
+
+* YouCompleteMe:
+    - Page: https://github.com/Valloric/YouCompleteMe
+    - Requires VIM >= 7.3.584
+    - Compile and Install YCM
+        $ cd ~/vim/bundle/YouCompleteMe
+        $ ./install.sh
+            - Parameters for install.sh script:
+                --clang-completer       : semantic support for C-family languages
+                --omnisharp-completer   : semantic support for C#
