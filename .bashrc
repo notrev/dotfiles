@@ -73,32 +73,33 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 # VirtualEnv indicator
-if test -z "$VIRTUAL_ENV"; then
-    PY_VIRTUALENV=""
-else
-    PY_VIRTUALENV="[`basename \"$VIRTUAL_ENV\"`] "
-fi
+# TODO: This indicator is not being shown the way it should
+function py_virtualenv() {
+    if test -z "$VIRTUAL_ENV"; then
+        echo ""
+    else
+        echo "[`basename \"$VIRTUAL_ENV\"`] "
+    fi
+}
 
 # GIT branch
-if declare -fF __git_ps1 > /dev/null; then
-    GIT_BRANCH='$(__git_ps1 " [%s]")'
-else
-    GIT_BRANCH=''
-fi
+function git_branch() {
+    echo '$(__git_ps1 " [%s]")'
+}
 
 if [ "$color_prompt" = yes ]; then
     PS1="${debian_chroot:+($debian_chroot)}"
-    PS1="${PS1}${GREEN}${PY_VIRTUALENV}"                        # VirtualEnv
+    PS1="${PS1}${GREEN}$(py_virtualenv)"                        # VirtualEnv
     PS1="${PS1}${LIGHT_RED}\u@\h${COLOR_DEFAULT}:${BLUE}\w"     # u@h:w
-    PS1="${PS1}${GRAY}${GIT_BRANCH} ${COLOR_DEFAULT}\$ "        # Git Branch
+    PS1="${PS1}${GRAY}$(git_branch) ${COLOR_DEFAULT}\$ "        # Git Branch
 
     #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;30m\]$(__git_ps1 " [%s]") \[\033[00m\]\$ '
     #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
     PS1="${debian_chroot:+($debian_chroot)}"
-    PS1="${PS1}${PY_VIRTUALENV}"            # VirtualEnv
+    PS1="${PS1}$(py_virtualenv)"            # VirtualEnv
     PS1="${PS1}\u@\h:\w"                    # u@h:w
-    PS1="${PS1}${GIT_BRANCH} \$ "           # Git Branch
+    PS1="${PS1}$(git_branch) \$ "           # Git Branch
 
     #PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
