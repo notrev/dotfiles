@@ -13,7 +13,7 @@ VIM
 * Vundle:
     - Page: https://github.com/gmarik/vundle
     - Command to download and install Vundle:
-        $ git clone http://github.com/gmarik/vundle.git ~/.vim/vundle.git
+        $ git clone http://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
     - Command to download and install plugins:
         $ vim +BundleInstall
 
