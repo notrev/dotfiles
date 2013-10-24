@@ -38,3 +38,11 @@ VIM
             - Parameters for install.sh script:
                 --clang-completer       : semantic support for C-family languages
                 --omnisharp-completer   : semantic support for C#
+
+
+=============
+KDE
+=============
+* Konsole:
+    - Copy konsole profile settings:
+        $ cp -r .kde ~/
