@@ -21,10 +21,8 @@ set softtabstop=4       " let backspace delete indent
 set pastetoggle=<F2>    " Turns paste mode on or off. Used to paste text in vim
 
 " For editing PO files
-if has('autocmd')
-    autocmd FileType po setlocal spell spelllang=pt
-    autocmd FileType po :colorscheme delek
-endif
+autocmd FileType po setlocal spell spelllang=pt
+autocmd FileType po :colorscheme delek
 
 " Persistent undo
 if has('persistent_undo')
@@ -62,18 +60,26 @@ nmap ,h :nohl<CR>
 "    endif
 "endif
 
-if has('autocmd')
-    highlight ExtraWSAndMaxChars ctermbg=red guibg=red ctermfg=white
-    match ExtraWSAndMaxChars /\%81v\|\s\+$/
-    autocmd BufWinEnter * match ExtraWSAndMaxChars /\%81v\|\s\+$/
-    autocmd InsertEnter * match ExtraWSAndMaxChars /\%81v\|\s\+\%#\@<!$/
-    autocmd InsertLeave * match ExtraWSAndMaxChars /\%81v\|\s\+$/
+highlight ExtraWSAndMaxChars ctermbg=red guibg=red ctermfg=white
+match ExtraWSAndMaxChars /\%81v\|\s\+$/
+autocmd BufWinEnter * match ExtraWSAndMaxChars /\%81v\|\s\+$/
+autocmd InsertEnter * match ExtraWSAndMaxChars /\%81v\|\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWSAndMaxChars /\%81v\|\s\+$/
 
-    if version >= 702
-        autocmd BufWinLeave * call clearmatches()
-    endif
+if version >= 702
+    autocmd BufWinLeave * call clearmatches()
 endif
 
 " Hightlight autocompletion window - modifying colors
 highlight Pmenu ctermbg=DarkGrey ctermfg=LightGrey
 highlight PmenuSel ctermbg=DarkBlue ctermfg=White
+
+" Commenting blocks of code.
+autocmd FileType c,cpp,java,php     let b:commentLeader = '// '
+autocmd FileType sh,ruby,python     let b:commentLeader = '# '
+autocmd FileType conf,fstab         let b:commentLeader = '# '
+autocmd FileType tex                let b:commentLeader = '% '
+autocmd FileType mail               let b:commentLeader = '> '
+autocmd FileType vim                let b:commentLeader = '" '
+noremap <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:commentLeader,'\/')<CR>/<CR>:nohlsearch<CR>
+noremap <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:commentLeader,'\/')<CR>//e<CR>:nohlsearch<CR>
