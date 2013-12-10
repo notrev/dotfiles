@@ -9,7 +9,6 @@ These are my linux dotfiles, with all my preffered configurations.
 =============
 VIM
 =============
-
 * Vundle:
     - Page: https://github.com/gmarik/vundle
     - Command to download and install Vundle:
@@ -46,3 +45,13 @@ KDE
 * Konsole:
     - Copy konsole profile settings:
         $ cp -r .kde ~/
+
+
+=============
+TMUX
+=============
+* Powerline:
+    - This powerline is the same one used in VIM, the same directory. So, if you
+      install it for VIM, it will also work for TMUX. If you do not install it
+      for VIM, you'll have to install if for TMUX and modify the path inside
+      ~/.tmux.conf
