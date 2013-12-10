@@ -38,8 +38,8 @@ set incsearch          " Incomplete search, show results while typing
 set smartcase          " case-sensitive if search contains an uppercase char
     " Change colors of highlighted word on search
 highlight Search ctermbg=blue ctermfg=white
-    " Clear highlight with ',h' keys on normal mode
-nmap ,h :nohl<CR>
+    " Clear search highlight with ',s' keys in normal mode
+nmap ,s :nohlsearch<CR>
 
 " Highlight as Error characters beyond column 80
 "highlight MaxChars ctermbg=red guibg=red
