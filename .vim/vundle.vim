@@ -24,3 +24,6 @@ endif
 
 " YouCompleteMe - Code autocompletion
 Bundle 'Valloric/YouCompleteMe'
+
+" Emmet - HTML expansion
+Bundle 'mattn/emmet-vim'
