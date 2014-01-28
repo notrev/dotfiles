@@ -38,8 +38,8 @@ set incsearch          " Incomplete search, show results while typing
 set smartcase          " case-sensitive if search contains an uppercase char
     " Change colors of highlighted word on search
 highlight Search ctermbg=blue ctermfg=white
-    " Clear search highlight with ',s' keys in normal mode
-nmap ,s :nohlsearch<CR>
+    " Clear search highlight with ',h' keys in normal mode
+nmap ,h :nohlsearch<CR>
 
 " Highlight as Error characters beyond column 80
 "highlight MaxChars ctermbg=red guibg=red
@@ -75,11 +75,18 @@ highlight Pmenu ctermbg=DarkGrey ctermfg=LightGrey
 highlight PmenuSel ctermbg=DarkBlue ctermfg=White
 
 " Commenting blocks of code.
-autocmd FileType c,cpp,java,php     let b:commentLeader = '// '
-autocmd FileType sh,ruby,python     let b:commentLeader = '# '
-autocmd FileType conf,fstab         let b:commentLeader = '# '
-autocmd FileType tex                let b:commentLeader = '% '
-autocmd FileType mail               let b:commentLeader = '> '
-autocmd FileType vim                let b:commentLeader = '" '
+autocmd FileType c,cpp,java,php,javascript      let b:commentLeader = '// '
+autocmd FileType sh,ruby,python                 let b:commentLeader = '# '
+autocmd FileType conf,fstab                     let b:commentLeader = '# '
+autocmd FileType tex                            let b:commentLeader = '% '
+autocmd FileType mail                           let b:commentLeader = '> '
+autocmd FileType vim                            let b:commentLeader = '" '
 noremap <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:commentLeader,'\/')<CR>/<CR>:nohlsearch<CR>
 noremap <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:commentLeader,'\/')<CR>//e<CR>:nohlsearch<CR>
+
+" Syntastic shortcut keys
+"if exists(':SyntasticCheck')
+nmap ,sc :SyntasticCheck<CR>
+nmap ,sr :SyntasticReset<CR>
+nmap ,si :SyntasticInfo<CR>
+"endif
