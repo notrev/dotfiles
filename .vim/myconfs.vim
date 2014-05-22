@@ -36,35 +36,20 @@ endif
 set hlsearch           " highlight the last used search pattern
 set incsearch          " Incomplete search, show results while typing
 set smartcase          " case-sensitive if search contains an uppercase char
-    " Change colors of highlighted word on search
+" Change colors of highlighted word on search
 highlight Search ctermbg=blue ctermfg=white
-    " Clear search highlight with ',h' keys in normal mode
+" Clear search highlight with ',h' keys in normal mode
 nmap ,h :nohlsearch<CR>
 
-" Highlight as Error characters beyond column 80
-"highlight MaxChars ctermbg=red guibg=red
-"command Hl80 :match MaxChars /\%>80v/
-"command Nohl80 :match None /\%>80v/
+" Highlight collumn 81 for some types of file
+highlight ColumnMarker ctermbg=magenta guibg=red ctermfg=white
+autocmd FileType sh,c,cpp,java,php  call matchadd('ColumnMarker', '\%81v', 100)
+autocmd FileType javascript,python  call matchadd('ColumnMarker', '\%81v', 100)
+autocmd FileType vim                call matchadd('ColumnMarker', '\%81v', 100)
 
-" Highlight extra whitespaces and max chars
-" Thanks to kurkale6ka, from #vim @ freenode
-"if has('autocmd')
-"    highlight ExtraWSAndMaxChars ctermbg=red guibg=red
-"    match ExtraWSAndMaxChars /\%>81v\|\s\+$/
-"    autocmd BufWinEnter * match ExtraWSAndMaxChars /\%>81v\|\s\+$/
-"    autocmd InsertEnter * match ExtraWSAndMaxChars /\%>81v\|\s\+\%#\@<!$/
-"    autocmd InsertLeave * match ExtraWSAndMaxChars /\%>81v\|\s\+$/
-"
-"    if version >= 702
-"        autocmd BufWinLeave * call clearmatches()
-"    endif
-"endif
-
-highlight ExtraWSAndMaxChars ctermbg=red guibg=red ctermfg=white
-match ExtraWSAndMaxChars /\%81v\|\s\+$/
-autocmd BufWinEnter * match ExtraWSAndMaxChars /\%81v\|\s\+$/
-autocmd InsertEnter * match ExtraWSAndMaxChars /\%81v\|\s\+\%#\@<!$/
-autocmd InsertLeave * match ExtraWSAndMaxChars /\%81v\|\s\+$/
+" Highlight trailing whitespaces
+highlight TrailingWhiteSpace ctermbg=red guibg=red ctermfg=white
+call matchadd('TrailingWhiteSpace', '\s\+$', 100)
 
 if version >= 702
     autocmd BufWinLeave * call clearmatches()
