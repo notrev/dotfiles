@@ -34,3 +34,6 @@ Bundle 'scrooloose/syntastic'
 let g:syntastic_mode_map = { 'mode': 'passive' }
 let g:syntastic_javascript_checkers = ['jslint']
 let g:syntastic_check_on_wq = 0
+
+" HTML5.vim - Support for HTML5 Tags and attributes
+Bundle 'othree/html5.vim'

@@ -44,8 +44,8 @@ nmap ,h :nohlsearch<CR>
 " Highlight collumn 81 for some types of file
 highlight ColumnMarker ctermbg=magenta guibg=red ctermfg=white
 autocmd FileType sh,c,cpp,java,php  call matchadd('ColumnMarker', '\%81v', 100)
-autocmd FileType javascript,python  call matchadd('ColumnMarker', '\%81v', 100)
 autocmd FileType vim                call matchadd('ColumnMarker', '\%81v', 100)
+autocmd FileType javascript,python  call matchadd('ColumnMarker', '\%81v', 100)
 
 " Highlight trailing whitespaces
 highlight TrailingWhiteSpace ctermbg=red guibg=red ctermfg=white
@@ -75,3 +75,7 @@ nmap ,sc :SyntasticCheck<CR>
 nmap ,sr :SyntasticReset<CR>
 nmap ,si :SyntasticInfo<CR>
 "endif
+
+if has("autocmd")
+    filetype plugin indent on
+endif
