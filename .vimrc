@@ -7,5 +7,13 @@ endif
 " My Configurations
 source ~/.vim/myconfs.vim
 
+" Turning filetype detection off
+" It will be turned on after all vundle plugins are loaded, to make sure
+" that vim.less will be activated
+filetype off
+
 " Vundle
 source ~/.vim/vundle.vim
+
+" Turning filetype detection on
+filetype on
