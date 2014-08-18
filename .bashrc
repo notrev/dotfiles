@@ -2,18 +2,56 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-# Colors:
+#-----------------------
+# FUNCTIONS
+#-----------------------
+# Function that generates a color to hostname according to itself
+function hostnameColor() {
+    WC=`echo "$HOSTNAME" | wc -c`
+    COLOR_VALUE=$(( ($WC % 7) + 30 ))
+    echo "\[\033[0;"$COLOR_VALUE"m\]"
+}
+
+# VirtualEnv indicator
+# TODO: This indicator is not being shown the way it should
+function py_virtualenv() {
+    if test -z "$VIRTUAL_ENV"; then
+        echo ""
+    else
+        echo "[`basename \"$VIRTUAL_ENV\"`] "
+    fi
+}
+
+# GIT branch
+function git_branch() {
+    echo '$(__git_ps1 " [%s]")'
+}
+
+#-----------------------
+# COLORS
+#-----------------------
+BLACK="\[\033[0;30m\]"
 RED="\[\033[0;31m\]"
-YELLOW="\[\033[1;33m\]"
 GREEN="\[\033[0;32m\]"
-BLUE="\[\033[1;34m\]"
+BROWN="\[\033[0;33m\]"
+BLUE="\[\033[0;34m\]"
+PURPLE="\[\033[0;35m\]"
+CYAN="\[\033[0;36m\]"
+LIGHT_GRAY="\[\033[0;37m\]"
+DARK_GRAY="\[\033[1;30m\]"
 LIGHT_RED="\[\033[1;31m\]"
 LIGHT_GREEN="\[\033[1;32m\]"
+YELLOW="\[\033[1;33m\]"
+LIGHT_BLUE="\[\033[1;34m\]"
+LIGHT_PURPLE="\[\033[1;35m\]"
+LIGHT_CYAN="\[\033[1;36m\]"
 WHITE="\[\033[1;37m\]"
-GRAY="\[\033[01;30m\]"
-LIGHT_GRAY="\[\033[0;37m\]"
 COLOR_NONE="\[\e[0m\]"
 COLOR_DEFAULT="\[\033[00m\]"
+
+#-----------------------
+# SETTINGS
+#-----------------------
 
 # If not running interactively, don't do anything
 case $- in
@@ -72,26 +110,14 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-# VirtualEnv indicator
-# TODO: This indicator is not being shown the way it should
-function py_virtualenv() {
-    if test -z "$VIRTUAL_ENV"; then
-        echo ""
-    else
-        echo "[`basename \"$VIRTUAL_ENV\"`] "
-    fi
-}
-
-# GIT branch
-function git_branch() {
-    echo '$(__git_ps1 " [%s]")'
-}
-
 if [ "$color_prompt" = yes ]; then
+    # get hostname color
+    HC=$(hostnameColor)
+
     PS1="${debian_chroot:+($debian_chroot)}"
-    PS1="${PS1}${GREEN}$(py_virtualenv)"                        # VirtualEnv
-    PS1="${PS1}${LIGHT_RED}\u@\h${COLOR_DEFAULT}:${BLUE}\w"     # u@h:w
-    PS1="${PS1}${GRAY}$(git_branch) ${COLOR_DEFAULT}\$ "        # Git Branch
+    PS1="${PS1}${GREEN}$(py_virtualenv)"                            # VirtualEnv
+    PS1="${PS1}${LIGHT_RED}\u${WHITE}@${HC}\h${PS1}${WHITE}:${YELLOW}\w" # u@h:w
+    PS1="${PS1}${GRAY}$(git_branch) ${COLOR_DEFAULT}\$ "            # Git Branch
 
     #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;30m\]$(__git_ps1 " [%s]") \[\033[00m\]\$ '
     #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
@@ -171,3 +197,19 @@ fi
 if [ -d /opt/android-sdk ] ; then
    PATH=/opt/android-sdk/platform-tools:/opt/android-sdk/tools:$PATH
 fi
+
+# Tizen SDK CLI
+if [ -d /home/everton/.tizen/tizen-sdk ] ; then
+   PATH=/home/everton/.tizen/tizen-sdk/tools/:$PATH
+   PATH=/home/everton/.tizen/tizen-sdk/tools/ide/bin:$PATH
+fi
+
+# Git
+if [ -d /opt/git ] ; then
+   PATH=/opt/git/bin:$PATH
+   LD_LIBRARY_PATH=/opt/git/lib:$LD_LIBRARY_PATH
+fi
+
+# P4 - perforce
+export P4CONFIG=/home/everton/.p4settings
+source /home/everton/p4v-env
