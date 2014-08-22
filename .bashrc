@@ -117,7 +117,7 @@ if [ "$color_prompt" = yes ]; then
     PS1="${debian_chroot:+($debian_chroot)}"
     PS1="${PS1}${GREEN}$(py_virtualenv)"                            # VirtualEnv
     PS1="${PS1}${LIGHT_RED}\u${WHITE}@${HC}\h${PS1}${WHITE}:${YELLOW}\w" # u@h:w
-    PS1="${PS1}${GRAY}$(git_branch) ${COLOR_DEFAULT}\$ "            # Git Branch
+    PS1="${PS1}${DARK_GRAY}$(git_branch) ${COLOR_DEFAULT}\$ "       # Git Branch
 
     #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;30m\]$(__git_ps1 " [%s]") \[\033[00m\]\$ '
     #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
@@ -199,9 +199,9 @@ if [ -d /opt/android-sdk ] ; then
 fi
 
 # Tizen SDK CLI
-if [ -d /home/everton/.tizen/tizen-sdk ] ; then
-   PATH=/home/everton/.tizen/tizen-sdk/tools/:$PATH
-   PATH=/home/everton/.tizen/tizen-sdk/tools/ide/bin:$PATH
+if [ -d $HOME/.tizen/tizen-sdk ] ; then
+   PATH=$HOME/.tizen/tizen-sdk/tools/:$PATH
+   PATH=$HOME/.tizen/tizen-sdk/tools/ide/bin:$PATH
 fi
 
 # Git
@@ -211,5 +211,5 @@ if [ -d /opt/git ] ; then
 fi
 
 # P4 - perforce
-export P4CONFIG=/home/everton/.p4settings
-source /home/everton/p4v-env
+export P4CONFIG=$HOME/.p4settings
+source $HOME/p4v-env
