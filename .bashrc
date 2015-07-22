@@ -4,6 +4,9 @@
 
 #-----------------------
 # COLORS
+#
+# Background color: #353535
+# Intense Background color: #3E3E3E
 #-----------------------
 BLACK="\[\033[0;30m\]"              #4A4948
 RED="\[\033[0;31m\]"                #C05350
@@ -35,6 +38,7 @@ function set_hostname_color() {
 }
 
 # VirtualEnv indicator
+# TODO: This indicator is not being shown the way it should
 function set_py_virtualenv() {
     if [ -n "$VIRTUAL_ENV" ] && [ $PY_VIRTUALENV ]; then
         PY_VIRTUALENV="<$(basename "$VIRTUAL_ENV")> "

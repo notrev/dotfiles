@@ -59,10 +59,14 @@ endif
 highlight Pmenu ctermbg=DarkGrey ctermfg=LightGrey
 highlight PmenuSel ctermbg=DarkBlue ctermfg=White
 
+" Highlight cursor line and cursor line number
+set cursorline
+highlight CursorLine cterm=NONE ctermbg=Black
+highlight CursorLineNr ctermbg=Black ctermfg=Red
+
 " Commenting blocks of code.
 autocmd FileType c,cpp,java,php,javascript      let b:commentLeader = '// '
-autocmd FileType sh,ruby,python                 let b:commentLeader = '# '
-autocmd FileType conf,fstab                     let b:commentLeader = '# '
+autocmd FileType sh,ruby,python,conf,fstab      let b:commentLeader = '# '
 autocmd FileType tex                            let b:commentLeader = '% '
 autocmd FileType mail                           let b:commentLeader = '> '
 autocmd FileType vim                            let b:commentLeader = '" '
