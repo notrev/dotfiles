@@ -29,6 +29,9 @@ Bundle 'Valloric/YouCompleteMe'
 " Emmet - HTML expansion
 Bundle 'mattn/emmet-vim'
 
+" VIM-LESS - LESS, CSS compiler
+Bundle 'groenewege/vim-less'
+
 " Syntastic - Syntax validation
 Bundle 'scrooloose/syntastic'
 
@@ -39,11 +42,11 @@ let g:syntastic_check_on_wq = 0
 " HTML5.vim - Support for HTML5 Tags and attributes
 Bundle 'othree/html5.vim'
 
-" vim-less - Syntax Highlight, indenting and autocompletion for less
-Bundle 'groenewege/vim-less'
-
 " OmniSharp - CSharp autocompletion
 Bundle 'OmniSharp/omnisharp-vim'
 
 " NERDTree
 Bundle 'scrooloose/nerdtree'
+
+map ,n :NERDTreeToggle<CR>
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
