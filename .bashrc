@@ -122,6 +122,9 @@ shopt -s checkwinsize
 # match all files and zero or more directories and subdirectories.
 #shopt -s globstar
 
+# If there is a .git-prompt file, load it.
+[ -f $HOME/.git-prompt.sh ] && source $HOME/.git-prompt.sh
+
 # Command executed everytime the prompt is displayed
 PROMPT_COMMAND=prompt_command
 
@@ -173,6 +176,9 @@ esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
+    # If running on Mac OS X, enable CLI colors
+    [ "$(uname -s)" == "Darwin"] && export CLICOLOR=1
+
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
     #alias dir='dir --color=auto'
@@ -254,8 +260,8 @@ if [ -d "/opt/nodejs-$NODEJS_VERSION" ] ; then
 fi
 
 # P4 - perforce
-export P4CONFIG=$HOME/.p4settings
-source $HOME/p4v-env
+[ -f $HOME/.p4settings ] && export P4CONFIG=$HOME/.p4settings
+[ -f $HOME/p4v-env ] && source $HOME/p4v-env
 
 # Enable programmable sdb completion features.
 if [ -f ~/.sdb/.sdb-completion.bash ]; then
@@ -263,5 +269,5 @@ if [ -f ~/.sdb/.sdb-completion.bash ]; then
 fi
 
 #Proxy
-export http_proxy="http://105.103.141.69:3128"
-export https_proxy="http://105.103.141.69:3128"
+#export http_proxy="http://105.103.141.69:3128"
+#export https_proxy="http://105.103.141.69:3128"
