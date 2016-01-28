@@ -37,3 +37,6 @@ let g:syntastic_check_on_wq = 0
 
 " HTML5.vim - Support for HTML5 Tags and attributes
 Bundle 'othree/html5.vim'
+
+" vim-less - Syntax Highlight, indenting and autocompletion for less
+Bundle 'groenewege/vim-less'
