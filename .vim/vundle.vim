@@ -16,6 +16,7 @@ Bundle 'Lokaltog/powerline'
 
 set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
 let g:Powerline_symbols = 'fancy'
+"let g:Powerline_symbols = 'unicode'
 set laststatus=2
 if match($TERM, "screen*") != -1 || match($TERM, "xterm*") != -1
     set term=xterm-256color
@@ -40,3 +41,9 @@ Bundle 'othree/html5.vim'
 
 " vim-less - Syntax Highlight, indenting and autocompletion for less
 Bundle 'groenewege/vim-less'
+
+" OmniSharp - CSharp autocompletion
+Bundle 'OmniSharp/omnisharp-vim'
+
+" NERDTree
+Bundle 'scrooloose/nerdtree'
