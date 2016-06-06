@@ -30,7 +30,7 @@ COLOR_DEFAULT="\[\033[00m\]"
 #-----------------------
 # FUNCTIONS
 #-----------------------
-# Function that generates a color to hostname according to itself
+# Function that generates a color to hostname according to the size of its name
 function set_hostname_color() {
     WC=$(echo "$HOSTNAME" | wc -c)
     COLOR_VALUE=$(( ($WC % 7) + 30 ))
@@ -38,9 +38,8 @@ function set_hostname_color() {
 }
 
 # VirtualEnv indicator
-# TODO: This indicator is not being shown the way it should
 function set_py_virtualenv() {
-    if [ -n "$VIRTUAL_ENV" ] && [ $PY_VIRTUALENV ]; then
+    if [ -n "$VIRTUAL_ENV" ]; then
         PY_VIRTUALENV="<$(basename "$VIRTUAL_ENV")> "
     else
         unset PY_VIRTUALENV
@@ -167,43 +166,22 @@ esac
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
+    xterm*|rxvt*)
+        PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1";;
+    *) ;;
 esac
 
-# enable color support of ls and also add handy aliases
+# enable color support
 if [ -x /usr/bin/dircolors ]; then
-    # If running on Mac OS X, enable CLI colors
-    [ "$(uname -s)" == "Darwin"] && export CLICOLOR=1
-
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto -n'
-    alias fgrep='fgrep --color=auto -n'
-    alias egrep='egrep --color=auto -n'
 fi
-
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+if [ -f $HOME/.bash_aliases ]; then
+    . $HOME/.bash_aliases
 fi
 
 # enable programmable completion features (you don't need to enable
@@ -219,13 +197,13 @@ fi
 
 # My Bin
 if [ -d $HOME/.local/bin ]; then
-    export PATH=$HOME/.local/bin:$PATH
+    PATH=$HOME/.local/bin:$PATH
 fi
 
 # ICECC
 if [ -d /usr/lib/icecc/bin ]; then
-    export ICECC_VERSION=$HOME/.icecc/.icecream.tar.gz
-    export PATH=/usr/lib/icecc/bin:$PATH
+    ICECC_VERSION=$HOME/.icecc/.icecream.tar.gz
+    PATH=/usr/lib/icecc/bin:$PATH
     alias make='CC="icecc" make'
 fi
 
@@ -237,19 +215,25 @@ fi
 # Android SDK
 if [ -d /opt/android-sdk ] ; then
     PATH=/opt/android-sdk/platform-tools:/opt/android-sdk/tools:$PATH
+elif [ -d /Applications/Android-SDK ]; then
+    PATH=/Applications/Android-SDK/platform-tools:/Applications/Android-SDK/tools:$PATH
 fi
 
 # Tizen SDK CLI
-if [ -d $HOME/.tizen/tizen-sdk ] ; then
-    PATH=$HOME/.tizen/tizen-sdk/tools/:$PATH
-    PATH=$HOME/.tizen/tizen-sdk/tools/emulator/bin:$PATH
-    PATH=$HOME/.tizen/tizen-sdk/tools/ide/bin:$PATH
+if [ -d $HOME/tizen-sdk ] ; then
+    PATH=$HOME/tizen-sdk/tools/:$PATH
+    PATH=$HOME/tizen-sdk/tools/emulator/bin:$PATH
+    PATH=$HOME/tizen-sdk/tools/ide/bin:$PATH
 fi
 
 # Git
 if [ -d /opt/git ] ; then
     PATH=/opt/git/bin:$PATH
     LD_LIBRARY_PATH=/opt/git/lib:$LD_LIBRARY_PATH
+fi
+
+if [ -f $HOME/.git-completion.bash ]; then
+    . $HOME/.git-completion.bash
 fi
 
 # Node.JS
@@ -260,12 +244,24 @@ if [ -d "/opt/nodejs-$NODEJS_VERSION" ] ; then
 fi
 
 # P4 - perforce
-[ -f $HOME/.p4settings ] && export P4CONFIG=$HOME/.p4settings
-[ -f $HOME/p4v-env ] && source $HOME/p4v-env
+if [ -f $HOME/.p4settings ]; then
+    P4CONFIG=$HOME/.p4settings
+fi
+
+if [ -f $HOME/p4v-env ]; then
+    . $HOME/p4v-env
+fi
 
 # Enable programmable sdb completion features.
-if [ -f ~/.sdb/.sdb-completion.bash ]; then
-    source ~/.sdb/.sdb-completion.bash
+if [ -f $HOME/.sdb/.sdb-completion.bash ]; then
+    . $HOME/.sdb/.sdb-completion.bash
+fi
+
+# Mac OS X specific settings
+if [ "$(uname -s)" == "Darwin" ]; then
+    if [ -f $HOME/.bash_macosx ]; then
+        . $HOME/.bash_macosx
+    fi
 fi
 
 #Proxy
