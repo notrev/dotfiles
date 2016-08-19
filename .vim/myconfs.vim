@@ -19,6 +19,7 @@ set number		        " Shows the line numeration
 set expandtab 	        " Changes shifttab for spaces
 set softtabstop=4       " let backspace delete indent
 set pastetoggle=<F2>    " Turns paste mode on or off. Used to paste text in vim
+set background=light    " Sets background to change font color intensity
 
 " For editing PO files
 autocmd FileType po setlocal spell spelllang=pt
@@ -61,8 +62,8 @@ highlight PmenuSel ctermbg=DarkBlue ctermfg=White
 
 " Highlight cursor line and cursor line number
 set cursorline
-highlight CursorLine cterm=NONE ctermbg=Black
-highlight CursorLineNr ctermbg=Black ctermfg=Red
+highlight CursorLine cterm=NONE ctermbg=NONE
+highlight CursorLineNr ctermbg=NONE ctermfg=LightGrey
 
 " Commenting blocks of code.
 autocmd FileType c,cpp,java,php,javascript      let b:commentLeader = '// '
