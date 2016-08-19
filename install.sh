@@ -65,14 +65,21 @@ mkdir -p $FONTCONFIG_DIR
 ########################################
 ### Configure and Install submodules ###
 ########################################
+
+# Download vundle - required to install VIM plugins
+pushd $HOME/.vim/bundle/
+    git clone http://github.com/VundleVim/Vundle.Vim vundle
+    git checkout master
+popd
+
+vim +PluginInstall +qall
+
 # VIM - Powerline fonts
 cp $HOME/.vim/bundle/powerline/font/PowerlineSymbols.otf $FONTS_DIR
 cp $HOME/.vim/bundle/powerline/font/10-powerline-symbols.conf $FONTCONFIG_DIR
 etc/vim-powerline-fonts/install.sh
 
 fc-cache -vf $FONTS_DIR
-
-vim +PluginInstall +qall
 
 # VIM - YouCompleteMe
 pushd $HOME/.vim/bundle/YouCompleteMe
