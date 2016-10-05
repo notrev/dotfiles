@@ -19,7 +19,8 @@ set number		        " Shows the line numeration
 set expandtab 	        " Changes shifttab for spaces
 set softtabstop=4       " let backspace delete indent
 set pastetoggle=<F2>    " Turns paste mode on or off. Used to paste text in vim
-set background=light    " Sets background to change font color intensity
+"set background=light
+colorscheme monokai
 
 " For editing PO files
 autocmd FileType po setlocal spell spelllang=pt
@@ -38,7 +39,7 @@ set hlsearch           " highlight the last used search pattern
 set incsearch          " Incomplete search, show results while typing
 set smartcase          " case-sensitive if search contains an uppercase char
 " Change colors of highlighted word on search
-highlight Search ctermbg=blue ctermfg=white
+"highlight Search ctermbg=blue ctermfg=white
 " Clear search highlight with ',h' keys in normal mode
 nmap ,h :nohlsearch<CR>
 
@@ -57,13 +58,13 @@ if version >= 702
 endif
 
 " Hightlight autocompletion window - modifying colors
-highlight Pmenu ctermbg=DarkGrey ctermfg=LightGrey
-highlight PmenuSel ctermbg=DarkBlue ctermfg=White
+"highlight Pmenu ctermbg=DarkGrey ctermfg=LightGrey
+"highlight PmenuSel ctermbg=DarkBlue ctermfg=White
 
 " Highlight cursor line and cursor line number
-set cursorline
-highlight CursorLine cterm=NONE ctermbg=NONE
-highlight CursorLineNr ctermbg=NONE ctermfg=LightGrey
+"set cursorline
+"highlight CursorLine cterm=NONE ctermbg=NONE
+"highlight CursorLineNr ctermbg=NONE ctermfg=LightGrey
 
 " Commenting blocks of code.
 autocmd FileType c,cpp,java,php,javascript      let b:commentLeader = '// '
