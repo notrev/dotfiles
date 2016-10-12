@@ -36,7 +36,8 @@ Bundle 'groenewege/vim-less'
 Bundle 'scrooloose/syntastic'
 
 let g:syntastic_mode_map = { 'mode': 'passive' }
-let g:syntastic_javascript_checkers = ['jslint']
+let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 " HTML5.vim - Support for HTML5 Tags and attributes
@@ -50,3 +51,8 @@ Bundle 'scrooloose/nerdtree'
 
 map ,n :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" VIM-Polyglot
+Bundle 'sheerun/vim-polyglot'
+
+let g:javascript_plugin_jsdoc = 1

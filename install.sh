@@ -19,6 +19,12 @@ PKGS_LIST=" build-essential \
             python-dev \
             mono-devel"
 
+# NodeJS Packages:
+#   - eslint : Used by VIM plugin for ECMAScript/Javascript syntax check
+#   - babel-eslint : Required by 'eslint'
+NODE_PKGS_LIST="eslint \
+                babel-eslint"
+
 ########################
 ### Install packages ###
 ########################
@@ -34,8 +40,12 @@ then
         sudo tee /etc/apt/sources.list.d/mono-xamarin.list
 fi
 
+# Install Debian/Ubuntu packages
 sudo apt-get update
 sudo apt-get install $PKGS_LIST
+
+# Install NodeJS packages
+sudo npm install -g $NODE_PKGS_LIST
 
 ###########################
 ### Initiate submodules ###

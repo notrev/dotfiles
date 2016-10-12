@@ -62,9 +62,11 @@ endif
 "highlight PmenuSel ctermbg=DarkBlue ctermfg=White
 
 " Highlight cursor line and cursor line number
-"set cursorline
-"highlight CursorLine cterm=NONE ctermbg=NONE
-"highlight CursorLineNr ctermbg=NONE ctermfg=LightGrey
+if exists('colors_name') && colors_name == 'monokai'
+    set cursorline
+    "highlight CursorLine cterm=NONE ctermbg=Black
+    "highlight CursorLineNr ctermbg=NONE ctermfg=DarkGrey
+endif
 
 " Commenting blocks of code.
 autocmd FileType c,cpp,java,php,javascript      let b:commentLeader = '// '
