@@ -39,6 +39,10 @@ let g:syntastic_mode_map = { 'mode': 'passive' }
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_error_symbol = "\u2717\u2717"
+let g:syntastic_warning_symbol = "\u26A0\u26A0"
+let g:syntastic_style_error_symbol = "\u054F\u2717"
+let g:syntastic_style_warning_symbol = "\u054F\u26A0"
 
 " HTML5.vim - Support for HTML5 Tags and attributes
 Bundle 'othree/html5.vim'
@@ -56,3 +60,4 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 Bundle 'sheerun/vim-polyglot'
 
 let g:javascript_plugin_jsdoc = 1
+
