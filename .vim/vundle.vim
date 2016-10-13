@@ -48,7 +48,8 @@ let g:syntastic_style_warning_symbol = "\u054F\u26A0"
 Bundle 'othree/html5.vim'
 
 " OmniSharp - CSharp autocompletion
-Bundle 'OmniSharp/omnisharp-vim'
+"Bundle 'OmniSharp/omnisharp-vim'
+Bundle 'svermeulen/omnisharp-vim'
 
 " NERDTree
 Bundle 'scrooloose/nerdtree'
@@ -61,3 +62,5 @@ Bundle 'sheerun/vim-polyglot'
 
 let g:javascript_plugin_jsdoc = 1
 
+" EditorConfig
+Plugin 'editorconfig/editorconfig-vim'

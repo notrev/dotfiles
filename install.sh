@@ -9,7 +9,6 @@ FONTCONFIG_DIR=$HOME/.config/fontconfig/conf.d/
 # Deb packages list
 PKGS_LIST=" build-essential \
             vim \
-            vim-nox-py2 \
             git \
             python-virtualenv \
             unzip \
@@ -17,6 +16,7 @@ PKGS_LIST=" build-essential \
             nodejs \
             cmake \
             python-dev \
+            python3-dev \
             mono-devel"
 
 # NodeJS Packages:
@@ -39,6 +39,9 @@ then
     echo "deb http://download.mono-project.com/repo/debian wheezy main" | \
         sudo tee /etc/apt/sources.list.d/mono-xamarin.list
 fi
+
+# Steps to install VIM 8 from ppa:jonathonf/vim while it is not on Ubuntu repos
+sudo add-apt-repository ppa:jonathonf/vim -y
 
 # Install Debian/Ubuntu packages
 sudo apt-get update
@@ -90,6 +93,11 @@ cp $HOME/.vim/bundle/powerline/font/10-powerline-symbols.conf $FONTCONFIG_DIR
 etc/vim-powerline-fonts/install.sh
 
 fc-cache -vf $FONTS_DIR
+
+# VIM - OmniSharp unnoficial Python3 support
+pushd $HOME/.vim/bundle/omnisharp-vim
+    git checkout Python3
+popd
 
 # VIM - YouCompleteMe
 pushd $HOME/.vim/bundle/YouCompleteMe
