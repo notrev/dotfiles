@@ -29,7 +29,8 @@ PKGS_LIST="build-essential \
             python-pip \
             python3-dev \
             python3-pip \
-            mono-devel"
+            mono-devel \
+            editorconfig"
 
 # NodeJS Packages:
 #   - eslint : Used by VIM plugin for ECMAScript/Javascript syntax check
@@ -114,6 +115,11 @@ mkdir -p $FONTCONFIG_DIR
 # Download vundle - required to install VIM plugins
 echo ""
 echo "### Preparations for installing NeoVIM plugins"
+
+pip install --upgrade neovim
+pip2 install --upgrade neovim
+pip3 install --upgrade neovim
+
 pushd $NEOVIM_INSTALL_DIR/bundle/
     if [ ! -d Vundle.vim ]; then
         git clone $VUNDLE_REPO Vundle.vim
