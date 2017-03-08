@@ -5,10 +5,13 @@
 #################
 FONTS_DIR=$HOME/.local/share/fonts/
 FONTCONFIG_DIR=$HOME/.config/fontconfig/conf.d/
+NEOVIM_INSTALL_DIR=$HOME/.config/nvim
+
+VUNDLE_REPO="http://github.com/VundleVim/Vundle.Vim"
 
 # Deb packages list
-PKGS_LIST=" build-essential \
-            vim \
+PKGS_LIST="build-essential \
+            neovim \
             git \
             python-virtualenv \
             unzip \
@@ -16,7 +19,9 @@ PKGS_LIST=" build-essential \
             nodejs \
             cmake \
             python-dev \
+            python-pip \
             python3-dev \
+            python3-pip \
             mono-devel"
 
 # NodeJS Packages:
@@ -40,12 +45,16 @@ then
         sudo tee /etc/apt/sources.list.d/mono-xamarin.list
 fi
 
-# Steps to install VIM 8 from ppa:jonathonf/vim while it is not on Ubuntu repos
-sudo add-apt-repository ppa:jonathonf/vim -y
+# Steps to install NeoVIM
+sudo add-apt-repository ppa:neovim-ppa/unstable -y
 
 # Install Debian/Ubuntu packages
 sudo apt-get update
 sudo apt-get install $PKGS_LIST
+
+# Set NeoVIM as alternative for VIM
+sudo update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 60
+sudo update-alternatives --config vim
 
 # Install NodeJS packages
 sudo npm install -g $NODE_PKGS_LIST
@@ -80,8 +89,8 @@ mkdir -p $FONTCONFIG_DIR
 ########################################
 
 # Download vundle - required to install VIM plugins
-pushd $HOME/.vim/bundle/
-    git clone http://github.com/VundleVim/Vundle.Vim vundle
+pushd $NEOVIM_INSTALL_DIR/bundle/
+    git clone $VUNDLE_REPO vundle
     git checkout master
 popd
 
@@ -94,13 +103,8 @@ etc/vim-powerline-fonts/install.sh
 
 fc-cache -vf $FONTS_DIR
 
-# VIM - OmniSharp unnoficial Python3 support
-pushd $HOME/.vim/bundle/omnisharp-vim
-    git checkout Python3
-popd
-
 # VIM - YouCompleteMe
-pushd $HOME/.vim/bundle/YouCompleteMe
+pushd $NEOVIM_INSTALL_DIR/bundle/YouCompleteMe
     git submodule update --init --recursive
-    ./install.sh --clang-completer --omnisharp-completer
+    ./install.sh --clang-completer --omnisharp-completer --tern-completer
 popd

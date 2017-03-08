@@ -4,28 +4,43 @@
 
 #-----------------------
 # COLORS
-#
-# Background color: #353535
-# Intense Background color: #3E3E3E
 #-----------------------
-BLACK="\[\033[0;30m\]"              #4A4948
-RED="\[\033[0;31m\]"                #C05350
-GREEN="\[\033[0;32m\]"              #729533
-YELLOW="\[\033[0;33m\]"             #BA8A33
-BLUE="\[\033[0;34m\]"               #4B8CBA
-MAGENTA="\[\033[0;35m\]"            #BA5586
-CYAN="\[\033[0;36m\]"               #4D9994
-GRAY="\[\033[0;37m\]"               #CBC7BB
-DARK_GRAY="\[\033[1;30m\]"          #73716C
-LIGHT_RED="\[\033[1;31m\]"          #E95C59
-LIGHT_GREEN="\[\033[1;32m\]"        #8CBE33
-LIGHT_YELLOW="\[\033[1;33m\]"       #E5AB41
-LIGHT_BLUE="\[\033[1;34m\]"         #52A6E3
-LIGHT_MAGENTA="\[\033[1;35m\]"      #D65E97
-LIGHT_CYAN="\[\033[1;36m\]"         #58E2BA
-LIGHT_GRAY="\[\033[1;37m\]"         #F4EFDF
-COLOR_NONE="\[\e[0m\]"
-COLOR_DEFAULT="\[\033[00m\]"
+PSX_ZONE_SEPARATOR=""
+PSX_ZONE_SEPARATOR_FULL=""
+PSX_GIT_BRANCH_ICON=""
+PSX_DEFAULT_FG="\[\e[38;5;255m\]"       # white
+PSX_ZONE1_FG="\[\e[38;5;22m\]"          # darker green
+PSX_ZONE1_BG="\[\e[48;5;148m\]"         # green
+PSX_ZONE1_BG_AS_FG="\[\e[38;5;148m\]"   # green
+PSX_ZONE2_FG=$PSX_DEFAULT_FG
+PSX_ZONE2_BG="\[\e[48;5;240m\]"         # dark gray
+PSX_ZONE2_BG_AS_FG="\[\e[38;5;240m\]"   # dark gray
+PSX_ZONE3_FG=$PSX_DEFAULT_FG
+PSX_ZONE3_BG="\[\e[48;5;236m\]"         # light gray
+PSX_ZONE3_BG_AS_FG="\[\e[38;5;236m\]"   # light gray
+PSX_ZONE4_FG="\[\e[38;5;124m\]"         # darker orange
+PSX_ZONE4_BG="\[\e[48;5;208m\]"         # orange
+PSX_ZONE4_BG_AS_FG="\[\e[38;5;208m\]"   # orange
+PSX_COLOR_CLEAR="\[\e[0m\]"
+PSX_USERNAME_COLOR="\[\e[38;5;148m\]"   # green
+PSX_ROOTUSER_COLOR="\[\e[38;5;11m\]"    # yellow
+PSX_HOSTNAME_COLORS=(
+    \ "\[\e[38;5;1m\]"
+    \ "\[\e[38;5;2m\]"
+    \ "\[\e[38;5;3m\]"
+    \ "\[\e[38;5;4m\]"
+    \ "\[\e[38;5;5m\]"
+    \ "\[\e[38;5;6m\]"
+    \ "\[\e[38;5;7m\]"
+    \ "\[\e[38;5;8m\]"
+    \ "\[\e[38;5;9m\]"
+    \ "\[\e[38;5;10m\]"
+    \ "\[\e[38;5;11m\]"
+    \ "\[\e[38;5;12m\]"
+    \ "\[\e[38;5;13m\]"
+    \ "\[\e[38;5;14m\]"
+    \ "\[\e[38;5;15m\]" )
+
 
 #-----------------------
 # FUNCTIONS
@@ -33,14 +48,14 @@ COLOR_DEFAULT="\[\033[00m\]"
 # Function that generates a color to hostname according to the size of its name
 function set_hostname_color() {
     WC=$(echo "$HOSTNAME" | wc -c)
-    COLOR_VALUE=$(( ($WC % 7) + 30 ))
-    HOSTNAME_COLOR="\[\033[0;"$COLOR_VALUE"m\]"
+    INDEX=$(( $WC % ${#PSX_HOSTNAME_COLORS[@]} ))
+    HOSTNAME_COLOR=${PSX_HOSTNAME_COLORS[INDEX]}
 }
 
 # VirtualEnv indicator
 function set_py_virtualenv() {
     if [ -n "$VIRTUAL_ENV" ]; then
-        PY_VIRTUALENV="<$(basename "$VIRTUAL_ENV")> "
+        PY_VIRTUALENV="$(basename "$VIRTUAL_ENV")"
     else
         unset PY_VIRTUALENV
     fi
@@ -48,26 +63,42 @@ function set_py_virtualenv() {
 
 # GIT branch
 function set_git_branch() {
-    GIT_BRANCH=$(__git_ps1 " [%s]")
+    GIT_BRANCH=$(__git_ps1 "${PSX_GIT_BRANCH_ICON} %s")
 }
 
 # Set user level indicator. $ for normal user, or # for root
 function set_userlevel_indicator() {
     if [ $EUID -ne 0 ]; then
         USER_INDICATOR='$';
-        USER_COLOR=$LIGHT_RED;
+        USER_COLOR=$PSX_USERNAME_COLOR;
     else
         USER_INDICATOR='#';
-        USER_COLOR=$LIGHT_YELLOW;
+        USER_COLOR=$PSX_ROOTUSER_COLOR;
     fi
 }
 
 function setup_color_prompt() {
-    PS1="${debian_chroot:+($debian_chroot)}"
-    PS1="${PS1}${DARK_GRAY}${PY_VIRTUALENV}"                                                # VirtualEnv
-    PS1="${PS1}${USER_COLOR}\u${LIGHT_GRAY}@${HOSTNAME_COLOR}\h${LIGHT_GRAY}:${GREEN}\w"    # u@h:w
-    PS1="${PS1}${DARK_GRAY}${GIT_BRANCH} "                                                  # Git Branch
-    PS1="${PS1}${COLOR_DEFAULT}${USER_INDICATOR} "
+    PS1="\n${debian_chroot:+($debian_chroot)}"
+
+    if [ -n "$PY_VIRTUALENV" ]; then
+        PS1="${PS1}${PSX_ZONE1_BG}${PSX_ZONE1_FG} ${PY_VIRTUALENV} "
+        PS1="${PS1}${PSX_ZONE2_BG}${PSX_ZONE1_BG_AS_FG}${PSX_ZONE_SEPARATOR_FULL}"
+    fi
+
+    PS1="${PS1}${PSX_ZONE2_BG} ${USER_COLOR}\u${PSX_DEFAULT_FG} @${HOSTNAME_COLOR}\h "
+    PS1="${PS1}${PSX_ZONE3_BG}${PSX_ZONE2_BG_AS_FG}${PSX_ZONE_SEPARATOR_FULL}"
+    PS1="${PS1}${PSX_ZONE3_FG} \w "
+
+    if [ "$GIT_BRANCH" != "" ]; then
+        PS1="${PS1}${PSX_ZONE4_BG}${PSX_ZONE3_BG_AS_FG}${PSX_ZONE_SEPARATOR_FULL}"
+        PS1="${PS1}${PSX_ZONE4_FG} ${GIT_BRANCH} "
+        PS1="${PS1}${PSX_COLOR_CLEAR}${PSX_ZONE4_BG_AS_FG}${PSX_ZONE_SEPARATOR_FULL}${PSX_COLOR_CLEAR}\n"
+    else
+        PS1="${PS1}${PSX_COLOR_CLEAR}${PSX_ZONE3_BG_AS_FG}${PSX_ZONE_SEPARATOR_FULL}${PSX_COLOR_CLEAR}\n"
+    fi
+
+    PS1="${PS1}${USER_COLOR} ${USER_INDICATOR} ${PSX_DEFAULT_FG}${PSX_ZONE_SEPARATOR} "
+    PS1="${PS1}${PSX_COLOR_CLEAR}"
 }
 
 function setup_prompt() {
@@ -200,30 +231,24 @@ if [ -d $HOME/.local/bin ]; then
     PATH=$HOME/.local/bin:$PATH
 fi
 
-# ICECC
-if [ -d /usr/lib/icecc/bin ]; then
-    ICECC_VERSION=$HOME/.icecc/.icecream.tar.gz
-    PATH=/usr/lib/icecc/bin:$PATH
-    alias make='CC="icecc" make'
-fi
-
 # Android NDK
-if [ -d /opt/android-ndk-r8b ] ; then
-    PATH=/opt/android-ndk-r8b:$PATH
+if [ -d /opt/android/ndk-r8b ] ; then
+    PATH=/opt/android/ndk-r8b:$PATH
 fi
 
 # Android SDK
-if [ -d /opt/android-sdk ] ; then
-    PATH=/opt/android-sdk/platform-tools:/opt/android-sdk/tools:$PATH
+if [ -d /opt/android/sdk ] ; then
+    PATH=/opt/android/sdk/platform-tools:$PATH
+    PATH=/opt/android/sdk/tools:$PATH
 elif [ -d /Applications/Android-SDK ]; then
-    PATH=/Applications/Android-SDK/platform-tools:/Applications/Android-SDK/tools:$PATH
+    PATH=/Applications/Android-SDK/platform-tools:$PATH
+    PATH=/Applications/Android-SDK/tools:$PATH
 fi
 
-# Tizen SDK CLI
-if [ -d $HOME/tizen-sdk ] ; then
-    PATH=$HOME/tizen-sdk/tools/:$PATH
-    PATH=$HOME/tizen-sdk/tools/emulator/bin:$PATH
-    PATH=$HOME/tizen-sdk/tools/ide/bin:$PATH
+# Android Studio
+if [ -d /opt/android/studio ] ; then
+    PATH=/opt/android/studio/bin:$PATH
+    PATH=/opt/android/studio/gradle/gradle-2.14.1/bin:$PATH
 fi
 
 # Git
@@ -236,33 +261,16 @@ if [ -f $HOME/.git-completion.bash ]; then
     . $HOME/.git-completion.bash
 fi
 
-# Node.JS
-NODEJS_VERSION="0.10.31"
-if [ -d "/opt/nodejs-$NODEJS_VERSION" ] ; then
-    PATH=/opt/nodejs-$NODEJS_VERSION/bin:$PATH
-    LD_LIBRARY_PATH=/opt/nodejs-$NODEJS_VERSION/lib:$LD_LIBRARY_PATH
-fi
-
-# P4 - perforce
-if [ -f $HOME/.p4settings ]; then
-    P4CONFIG=$HOME/.p4settings
-fi
-
-if [ -f $HOME/p4v-env ]; then
-    . $HOME/p4v-env
-fi
-
-# Enable programmable sdb completion features.
-if [ -f $HOME/.sdb/.sdb-completion.bash ]; then
-    . $HOME/.sdb/.sdb-completion.bash
-fi
-
 # Mac OS X specific settings
 if [ "$(uname -s)" == "Darwin" ]; then
     if [ -f $HOME/.bash_macosx ]; then
         . $HOME/.bash_macosx
     fi
 fi
+
+# $HOME based prefix for global node_modules
+export PATH=$HOME/.npm-pkgs/bin:$PATH
+export NODE_PATH=$HOME/.npm-pkgs/lib/node_modules:$NODE_PATH
 
 #Proxy
 #export http_proxy="http://105.103.141.69:3128"
