@@ -82,7 +82,7 @@ done
 ##########################
 ### Create directories ###
 ##########################
-mkdir $FONTS_DIR
+mkdir -p $FONTS_DIR
 mkdir -p $FONTCONFIG_DIR
 
 ########################################
