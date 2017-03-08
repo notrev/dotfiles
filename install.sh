@@ -37,6 +37,8 @@ NODE_PKGS_LIST="eslint \
 
 # Steps to install mono-devel
 # Mono is required to install Omnisharp, which is used in VIM's YouCompleteMe
+echo ""
+echo "### Preparations for installing 'mono-devel'"
 if [ ! -f /etc/apt/sources.list.d/mono-xamarin.list ]
 then
     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
@@ -47,22 +49,32 @@ then
 fi
 
 # Steps to install NeoVIM
+echo ""
+echo "### Preparations for installing 'neovim'"
 sudo add-apt-repository ppa:neovim-ppa/unstable -y
 
 # Install Debian/Ubuntu packages
+echo ""
+echo "### Installing Debian packages with APT"
 sudo apt-get update
 sudo apt-get install $PKGS_LIST
 
 # Set NeoVIM as alternative for VIM
+echo ""
+echo "### Updating alternatives: vim -> nvim"
 sudo update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 60
 sudo update-alternatives --config vim
 
 # Install NodeJS packages
+echo ""
+echo "### Installing NodeJS packages with NPM"
 sudo npm install -g $NODE_PKGS_LIST
 
 ###########################
 ### Initiate submodules ###
 ###########################
+echo ""
+echo "### Setting up GIT submodules"
 git submodule init
 git submodule foreach git checkout master
 
@@ -72,6 +84,8 @@ git submodule foreach git checkout master
 ###############################
 ### Copy dot-files to $HOME ###
 ###############################
+echo ""
+echo "### Copying dot-files to home directory"
 DOT_FILES=$(ls -a --ignore={.,..,README*,LICENSE*,install.sh*,.git*,etc})
 
 for FILE in $DOT_FILES
@@ -82,6 +96,8 @@ done
 ##########################
 ### Create directories ###
 ##########################
+echo ""
+echo "### Creating directories"
 mkdir -p $FONTS_DIR
 mkdir -p $FONTCONFIG_DIR
 
@@ -90,14 +106,23 @@ mkdir -p $FONTCONFIG_DIR
 ########################################
 
 # Download vundle - required to install VIM plugins
+echo ""
+echo "### Preparations for installing NeoVIM plugins"
 pushd $NEOVIM_INSTALL_DIR/bundle/
     git clone $VUNDLE_REPO vundle
-    git checkout master
+
+    pushd $NEOVIM_INSTALL_DIR/bundle/vundle
+        git checkout master
+    popd
 popd
 
+echo ""
+echo "### Installing NeoVIM plugins"
 vim +PluginInstall +qall
 
 # VIM - Powerline fonts
+echo ""
+echo "### Setting up fonts"
 cp $HOME/.vim/bundle/powerline/font/PowerlineSymbols.otf $FONTS_DIR
 cp $HOME/.vim/bundle/powerline/font/10-powerline-symbols.conf $FONTCONFIG_DIR
 etc/vim-powerline-fonts/install.sh
@@ -105,6 +130,8 @@ etc/vim-powerline-fonts/install.sh
 fc-cache -vf $FONTS_DIR
 
 # VIM - YouCompleteMe
+echo ""
+echo "### NeoVIM plugin installation: YouCompleteMe"
 pushd $NEOVIM_INSTALL_DIR/bundle/YouCompleteMe
     git submodule update --init --recursive
     ./install.sh --clang-completer --omnisharp-completer --tern-completer
