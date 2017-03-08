@@ -2,7 +2,7 @@
 " VUNDLE
 " ---------
 set rtp+=~/.config/nvim/bundle/Vundle.vim
-call vundle#rc('~/.config/nvim/bundle')
+call vundle#begin('~/.config/nvim/bundle')
 
 " Self managed plugin [Required]
 Plugin 'VundleVim/Vundle.vim'
