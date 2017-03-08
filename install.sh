@@ -17,6 +17,7 @@ PKGS_LIST="build-essential \
             unzip \
             clang \
             nodejs \
+            npm \
             cmake \
             python-dev \
             python-pip \
