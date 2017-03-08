@@ -126,6 +126,8 @@ pushd $NEOVIM_INSTALL_DIR/bundle/
     fi
 
     pushd $NEOVIM_INSTALL_DIR/bundle/Vundle.vim
+        git checkout master
+    popd
 popd
 
 echo ""
