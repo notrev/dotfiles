@@ -1,5 +1,11 @@
 #!/bin/bash -e
 
+# This installation script requires some commands that might not be in a minimal
+# environment.
+#   - wget : in package wget
+#   - add-apt-repository : in package software-properties-common
+#   - fc-cache : in package fontconfig
+
 #################
 ### Variables ###
 #################
@@ -109,11 +115,11 @@ mkdir -p $FONTCONFIG_DIR
 echo ""
 echo "### Preparations for installing NeoVIM plugins"
 pushd $NEOVIM_INSTALL_DIR/bundle/
-    git clone $VUNDLE_REPO vundle
+    if [ ! -d Vundle.vim ]; then
+        git clone $VUNDLE_REPO Vundle.vim
+    fi
 
-    pushd $NEOVIM_INSTALL_DIR/bundle/vundle
-        git checkout master
-    popd
+    pushd $NEOVIM_INSTALL_DIR/bundle/Vundle.vim
 popd
 
 echo ""
@@ -123,8 +129,11 @@ vim +PluginInstall +qall
 # VIM - Powerline fonts
 echo ""
 echo "### Setting up fonts"
-cp $HOME/.vim/bundle/powerline/font/PowerlineSymbols.otf $FONTS_DIR
-cp $HOME/.vim/bundle/powerline/font/10-powerline-symbols.conf $FONTCONFIG_DIR
+wget -c https://raw.githubusercontent.com/powerline/powerline/develop/font/PowerlineSymbols.otf \
+    -O $FONTS_DIR/PowerlineSymbols.otf
+wget -c https://raw.githubusercontent.com/powerline/powerline/develop/font/10-powerline-symbols.conf \
+    -O $FONTCONFIG_DIR/10-powerline-symbols.conf
+
 etc/vim-powerline-fonts/install.sh
 
 fc-cache -vf $FONTS_DIR
