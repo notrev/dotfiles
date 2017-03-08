@@ -151,3 +151,5 @@ command! -nargs=+ Fag call fzf#run({
     \ 'sink': function('AgHandler'),
     \ 'options': '+m',
     \ 'tmux_height': '60%'})
+
+call vundle#end()
