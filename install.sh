@@ -84,10 +84,8 @@ sudo npm install -g $NODE_PKGS_LIST
 echo ""
 echo "### Setting up GIT submodules"
 git submodule init
+git submodule update
 git submodule foreach git checkout master
-
-# For update
-#git submodules update
 
 ###############################
 ### Copy dot-files to $HOME ###
