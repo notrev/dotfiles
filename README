@@ -1,48 +1,34 @@
-=============
-MY DOT FILES
-=============
-Author: Éverton Arruda <root@earruda.eti.br>
-        http://earruda.eti.br
+# MY DOT FILES
+Author: Éverton Arruda \< <root@earruda.eti.br> \> | http://earruda.eti.br
 
 These are my linux dotfiles, with all my preffered configurations.
 
-=============
-VIM
-=============
-* Vundle:
-    - Page: https://github.com/gmarik/vundle
-    - Command to download and install Vundle:
-        $ git clone http://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
-    - Command to download and install plugins:
-        $ vim +BundleInstall
+It contains configurations for:
+* GIT
+* NeoVIM
+* BASH
 
-* Powerline:
-    - OBS: In order for powerline to work in Debian, install vim-nox package:
-        # apt-get install vim-nox
-    - Move PowerlineSymbols font to fonts directory:
-        $ mkdir ~/.fonts        # create if it does not exist
-        $ cp ~/.vim/bundle/powerline/font/PowerlineSymbols.otf ~/.fonts/
-    - Reload font cache:
-        $ fc-cache -vf ~/.fonts
-    - Move 10-powerline-symbols.conf to ~/.fonts.conf.d/ or ~/.config/fontconfig/conf.d/
-        $ mkdir ~/.config/fontconfig/conf.d/            # or ~/.fonts.conf.d/
-        $ cp ~/.vim/bundle/powerline/font/10-powerline-symbols.conf ~/.config/fontconfig/conf.d/
+## Installation
+The installation script was only tested in Ubuntu GNU/Linux.
 
-* YouCompleteMe:
-    - Page: https://github.com/Valloric/YouCompleteMe
-    - Requires VIM >= 7.3.584
-    - Compile and Install YCM
-        $ cd ~/vim/bundle/YouCompleteMe
-        $ ./install.sh
-            - Parameters for install.sh script:
-                --clang-completer       : semantic support for C-family languages
-                --omnisharp-completer   : semantic support for C#
+### Dependencies
+To run the installation script correctly you will need the following commands:
+* `sudo` - available in the package **sudo**
+* `wget` - available in the package **wget**
+* `add-apt-repository` - available in the package **software-properties-common**
+* `fc-cache` - available in the pacakge **fontconfig**
 
-=============
-TMUX
-=============
-* Powerline:
-    - This powerline is the same one used in VIM, the same directory. So, if you
-      install it for VIM, it will also work for TMUX. If you do not install it
-      for VIM, you'll have to install if for TMUX and modify the path inside
-      ~/.tmux.conf
+### Running the installation script
+If the `install.sh` script is an executable, you can run:
+
+```
+    $ ./install.sh
+```
+
+if it is not an executable, you can run:
+
+```
+    $ bash -e install.sh
+```
+
+With the `-e` parameter, `bash` stops the execution if any error occurs
