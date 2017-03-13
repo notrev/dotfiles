@@ -32,3 +32,6 @@ if it is not an executable, you can run:
 ```
 
 With the `-e` parameter, `bash` stops the execution if any error occurs
+
+## Other information
+Font used in terminal: Meslo LG M Regular for Powerline (https://github.com/powerline/fonts/tree/master/Meslo)
