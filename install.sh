@@ -12,6 +12,7 @@
 FONTS_DIR=$HOME/.local/share/fonts/
 FONTCONFIG_DIR=$HOME/.config/fontconfig/conf.d/
 NEOVIM_INSTALL_DIR=$HOME/.config/nvim
+VIM_UNDOFILES_DIR=$HOME/.vim-undo-files
 
 VUNDLE_REPO="http://github.com/VundleVim/Vundle.Vim"
 
@@ -106,6 +107,7 @@ echo ""
 echo "### Creating directories"
 mkdir -p $FONTS_DIR
 mkdir -p $FONTCONFIG_DIR
+mkdir -p $VIM_UNDOFILES_DIR
 
 ########################################
 ### Configure and Install submodules ###
