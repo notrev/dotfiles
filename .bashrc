@@ -16,8 +16,8 @@ PSX_ZONE2_FG=$PSX_DEFAULT_FG
 PSX_ZONE2_BG="\[\e[48;5;240m\]"         # dark gray
 PSX_ZONE2_BG_AS_FG="\[\e[38;5;240m\]"   # dark gray
 PSX_ZONE3_FG=$PSX_DEFAULT_FG
-PSX_ZONE3_BG="\[\e[48;5;236m\]"         # light gray
-PSX_ZONE3_BG_AS_FG="\[\e[38;5;236m\]"   # light gray
+PSX_ZONE3_BG="\[\e[48;5;238m\]"         # light gray
+PSX_ZONE3_BG_AS_FG="\[\e[38;5;238m\]"   # light gray
 PSX_ZONE4_FG="\[\e[38;5;124m\]"         # darker orange
 PSX_ZONE4_BG="\[\e[48;5;208m\]"         # orange
 PSX_ZONE4_BG_AS_FG="\[\e[38;5;208m\]"   # orange
@@ -25,21 +25,21 @@ PSX_COLOR_CLEAR="\[\e[0m\]"
 PSX_USERNAME_COLOR="\[\e[38;5;148m\]"   # green
 PSX_ROOTUSER_COLOR="\[\e[38;5;11m\]"    # yellow
 PSX_HOSTNAME_COLORS=(
-    \ "\[\e[38;5;1m\]"
-    \ "\[\e[38;5;2m\]"
-    \ "\[\e[38;5;3m\]"
-    \ "\[\e[38;5;4m\]"
-    \ "\[\e[38;5;5m\]"
-    \ "\[\e[38;5;6m\]"
-    \ "\[\e[38;5;7m\]"
-    \ "\[\e[38;5;8m\]"
-    \ "\[\e[38;5;9m\]"
-    \ "\[\e[38;5;10m\]"
-    \ "\[\e[38;5;11m\]"
-    \ "\[\e[38;5;12m\]"
-    \ "\[\e[38;5;13m\]"
-    \ "\[\e[38;5;14m\]"
-    \ "\[\e[38;5;15m\]" )
+    "\[\e[38;5;1m\]"\
+    "\[\e[38;5;2m\]"\
+    "\[\e[38;5;3m\]"\
+    "\[\e[38;5;4m\]"\
+    "\[\e[38;5;5m\]"\
+    "\[\e[38;5;6m\]"\
+    "\[\e[38;5;7m\]"\
+    "\[\e[38;5;8m\]"\
+    "\[\e[38;5;9m\]"\
+    "\[\e[38;5;10m\]"\
+    "\[\e[38;5;11m\]"\
+    "\[\e[38;5;12m\]"\
+    "\[\e[38;5;13m\]"\
+    "\[\e[38;5;14m\]"\
+    "\[\e[38;5;15m\]")
 
 
 #-----------------------
@@ -78,14 +78,14 @@ function set_userlevel_indicator() {
 }
 
 function setup_color_prompt() {
-    PS1="\n${debian_chroot:+($debian_chroot)}"
+    PS1="${debian_chroot:+($debian_chroot)}"
 
     if [ -n "$PY_VIRTUALENV" ]; then
         PS1="${PS1}${PSX_ZONE1_BG}${PSX_ZONE1_FG} ${PY_VIRTUALENV} "
         PS1="${PS1}${PSX_ZONE2_BG}${PSX_ZONE1_BG_AS_FG}${PSX_ZONE_SEPARATOR_FULL}"
     fi
 
-    PS1="${PS1}${PSX_ZONE2_BG} ${USER_COLOR}\u${PSX_DEFAULT_FG} @${HOSTNAME_COLOR}\h "
+    PS1="${PS1}${PSX_ZONE2_BG} ${USER_COLOR}\u${PSX_DEFAULT_FG}@${HOSTNAME_COLOR}\h "
     PS1="${PS1}${PSX_ZONE3_BG}${PSX_ZONE2_BG_AS_FG}${PSX_ZONE_SEPARATOR_FULL}"
     PS1="${PS1}${PSX_ZONE3_FG} \w "
 
@@ -275,3 +275,7 @@ export NODE_PATH=$HOME/.npm-pkgs/lib/node_modules:$NODE_PATH
 #Proxy
 #export http_proxy="http://105.103.141.69:3128"
 #export https_proxy="http://105.103.141.69:3128"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
