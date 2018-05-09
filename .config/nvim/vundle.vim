@@ -2,7 +2,7 @@
 " VUNDLE
 " ---------
 set rtp+=~/.config/nvim/bundle/Vundle.vim
-call vundle#begin('~/.config/nvim/bundle')
+call vundle#rc('~/.config/nvim/bundle')
 
 " Self managed plugin [Required]
 Plugin 'VundleVim/Vundle.vim'
@@ -20,7 +20,7 @@ Plugin 'itchyny/lightline.vim'
 let g:lightline = {
     \ 'active': {
     \   'left': [ [ 'mode', 'paste' ],
-    \             [ 'readonly', 'fugitive', 'filename' ] ]
+    \             [ 'readonly', 'fugitive', 'relativepath' ] ]
     \ },
     \ 'component_function': {
     \   'fugitive': 'LightLineFugitive',
@@ -74,7 +74,8 @@ function! LightLineFilename()
 endfunction
 
 function! LightLineMode()
-    return winwidth(0) > 60 ? lightline#mode() : ''
+    return lightline#mode()[0]
+    " return winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
 
 " [PLUGIN] YouCompleteMe - Code autocompletion
@@ -151,5 +152,3 @@ command! -nargs=+ Fag call fzf#run({
     \ 'sink': function('AgHandler'),
     \ 'options': '+m',
     \ 'tmux_height': '60%'})
-
-call vundle#end()
