@@ -10,21 +10,29 @@
 ### Variables ###
 #################
 FONTS_DIR=$HOME/.local/share/fonts/
-FONTCONFIG_DIR=$HOME/.config/fontconfig/conf.d/
+#FONTCONFIG_DIR=$HOME/.config/fontconfig/conf.d/
 NEOVIM_INSTALL_DIR=$HOME/.config/nvim
 VIM_UNDOFILES_DIR=$HOME/.vim-undo-files
 
-VUNDLE_REPO="http://github.com/VundleVim/Vundle.Vim"
+PPA_ROXTERM="ppa:h-realh/roxterm"
+PPA_NEOVIM="ppa:neovim-ppa/unstable"
+
+REPO_VUNDLE="http://github.com/VundleVim/Vundle.Vim"
+REPO_POWERLEVEL9K="https://github.com/bhilburn/powerlevel9k.git"
+
+OMZ_INSTALL_URL="https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh"
+FONT_MESLO_NERD="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/M/complete/Meslo%20LG%20M%20Regular%20Nerd%20Font%20Complete.otf"
 
 # Deb packages list
 PKGS_LIST="build-essential \
+            zsh \
+            roxterm \
             neovim \
             git \
             python-virtualenv \
             unzip \
             clang \
             nodejs \
-            nodejs-legacy \
             npm \
             cmake \
             python-dev \
@@ -57,16 +65,32 @@ then
         sudo tee /etc/apt/sources.list.d/mono-xamarin.list
 fi
 
+# Steps to setup Font with glyphs/icons
+echo ""
+echo "### Setting up fonts"
+wget -c $FONT_MESLO_NERD \
+    -P $FONTS_DIR/
+
+fc-cache -vf $FONTS_DIR
+
+# Steps to install ROXTerm
+echo ""
+echo "### Preparations for installing 'roxterm'"
+sudo add-apt-repository $PPA_ROXTERM -y
+
 # Steps to install NeoVIM
 echo ""
 echo "### Preparations for installing 'neovim'"
-sudo add-apt-repository ppa:neovim-ppa/unstable -y
+sudo add-apt-repository $PPA_NEOVIM -y
 
 # Install Debian/Ubuntu packages
 echo ""
 echo "### Installing Debian packages with APT"
 sudo apt-get update
 sudo apt-get install $PKGS_LIST
+
+# Set zsh as the main shell
+chsh -s $(which zsh)
 
 # Set NeoVIM as alternative for VIM
 echo ""
@@ -82,11 +106,11 @@ sudo npm install -g $NODE_PKGS_LIST
 ###########################
 ### Initiate submodules ###
 ###########################
-echo ""
-echo "### Setting up GIT submodules"
-git submodule init
-git submodule update
-git submodule foreach git checkout master
+#echo ""
+#echo "### Setting up GIT submodules"
+#git submodule init
+#git submodule update
+#git submodule foreach git checkout master
 
 ###############################
 ### Copy dot-files to $HOME ###
@@ -106,7 +130,7 @@ done
 echo ""
 echo "### Creating directories"
 mkdir -p $FONTS_DIR
-mkdir -p $FONTCONFIG_DIR
+#mkdir -p $FONTCONFIG_DIR
 mkdir -p $VIM_UNDOFILES_DIR
 
 ########################################
@@ -123,7 +147,7 @@ pip3 install --upgrade neovim
 
 pushd $NEOVIM_INSTALL_DIR/bundle/
     if [ ! -d Vundle.vim ]; then
-        git clone $VUNDLE_REPO Vundle.vim
+        git clone $REPO_VUNDLE Vundle.vim
     fi
 
     pushd $NEOVIM_INSTALL_DIR/bundle/Vundle.vim
@@ -135,18 +159,6 @@ echo ""
 echo "### Installing NeoVIM plugins"
 vim +PluginInstall +qall
 
-# VIM - Powerline fonts
-echo ""
-echo "### Setting up fonts"
-wget -c https://raw.githubusercontent.com/powerline/powerline/develop/font/PowerlineSymbols.otf \
-    -O $FONTS_DIR/PowerlineSymbols.otf
-wget -c https://raw.githubusercontent.com/powerline/powerline/develop/font/10-powerline-symbols.conf \
-    -O $FONTCONFIG_DIR/10-powerline-symbols.conf
-
-etc/vim-powerline-fonts/install.sh
-
-fc-cache -vf $FONTS_DIR
-
 # VIM - YouCompleteMe
 echo ""
 echo "### NeoVIM plugin installation: YouCompleteMe"
@@ -154,3 +166,9 @@ pushd $NEOVIM_INSTALL_DIR/bundle/YouCompleteMe
     git submodule update --init --recursive
     ./install.sh --clang-completer --omnisharp-completer --tern-completer
 popd
+
+# Zsh - Install Oh-My-Zsh (https://github.com/robbyrussell/oh-my-zsh)
+sh -c "$(curl -fsSL $OMZ_INSTALL_URL)"
+
+# Zsh - powerlevel9k
+git clone $REPO_POWERLEVEL9K $HOME/.oh-my-zsh/custom/themes/powerlevel9k
