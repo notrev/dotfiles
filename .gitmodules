@@ -1,3 +1,0 @@
-[submodule "etc/vim-powerline-fonts"]
-	path = etc/vim-powerline-fonts
-	url = https://github.com/powerline/fonts
