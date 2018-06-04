@@ -1,12 +1,13 @@
 # MY DOT FILES
-Author: Éverton Arruda \< <root@earruda.eti.br> \> | http://earruda.eti.br
+Author: Éverton Arruda | http://earruda.eti.br
 
 These are my linux dotfiles, with all my preffered configurations.
 
 It contains configurations for:
 * GIT
 * NeoVIM
-* BASH
+* Zsh + Oh-My-Zsh + Powerlevel9k theme
+* ROXterm
 
 ## Installation
 The installation script was only tested in Ubuntu GNU/Linux.
@@ -34,4 +35,4 @@ if it is not an executable, you can run:
 With the `-e` parameter, `bash` stops the execution if any error occurs
 
 ## Other information
-Font used in terminal: Meslo LG M Regular for Powerline (https://github.com/powerline/fonts/tree/master/Meslo)
+Font used in terminal: Meslo LG M Regular Nerd Font Complete (https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/Meslo/M/complete/Meslo%20LG%20M%20Regular%20Nerd%20Font%20Complete.otf)
