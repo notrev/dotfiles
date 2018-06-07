@@ -29,6 +29,7 @@ PKGS_LIST="build-essential \
             roxterm \
             neovim \
             git \
+            tmux \
             python-virtualenv \
             unzip \
             clang \
