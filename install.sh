@@ -118,7 +118,7 @@ sudo npm install -g $NODE_PKGS_LIST
 ###############################
 echo ""
 echo "### Copying dot-files to home directory"
-DOT_FILES=$(ls -a --ignore={.,..,README*,LICENSE*,install.sh*,.git*,etc})
+DOT_FILES=$(ls -a --ignore={.,..,README*,LICENSE*,install.sh,.git{i,m}*,.zsh*})
 
 for FILE in $DOT_FILES
 do
@@ -169,7 +169,16 @@ pushd $NEOVIM_INSTALL_DIR/bundle/YouCompleteMe
 popd
 
 # Zsh - Install Oh-My-Zsh (https://github.com/robbyrussell/oh-my-zsh)
-sh -c "$(curl -fsSL $OMZ_INSTALL_URL)"
+echo ""
+echo "### Installing Oh-My-Zsh"
+sh -c "$(wget $OMZ_INSTALL_URL -O - | sed '/\s*env\s\s*zsh\s*/d')"
 
 # Zsh - powerlevel9k
+echo ""
+echo "### Installing POWERLEVEL9K for Oh-My-Zsh"
 git clone $REPO_POWERLEVEL9K $HOME/.oh-my-zsh/custom/themes/powerlevel9k
+
+# Zsh - Copying Zsh dot-files
+echo ""
+echo "### Copying Zsh dot-files"
+cp -r .zsh* $HOME
