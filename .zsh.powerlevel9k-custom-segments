@@ -1,0 +1,27 @@
+# Custom segments for Oh-My-Zsh's custom theme Powerlevel9k
+
+# =========================
+# user_indicator
+#
+# Displays user indicator icons for normal user and root
+# TODO: Enable customizable background color. This needs theme modifications
+# =========================
+
+set_default POWERLEVEL9K_CUSTOM_USER_INDICATOR_ICON '$'
+set_default POWERLEVEL9K_CUSTOM_USER_INDICATOR_ROOT_ICON '#'
+set_default POWERLEVEL9K_CUSTOM_USER_INDICATOR_BACKGROUND '000'
+set_default POWERLEVEL9K_CUSTOM_USER_INDICATOR_FOREGROUND '254'
+#set_default POWERLEVEL9K_CUSTOM_USER_INDICATOR_ROOT_BACKGROUND $POWERLEVEL9K_CUSTOM_USER_INDICATOR_BACKGROUND
+set_default POWERLEVEL9K_CUSTOM_USER_INDICATOR_ROOT_FOREGROUND '011'
+
+prompt_custom_user_indicator() {
+    local icon=$POWERLEVEL9K_CUSTOM_USER_INDICATOR_ICON
+    local fg=$POWERLEVEL9K_CUSTOM_USER_INDICATOR_FOREGROUND
+
+    if [[ "$UID" -eq 0 ]]; then
+        icon=$POWERLEVEL9K_CUSTOM_USER_INDICATOR_ROOT_ICON
+        fg=$POWERLEVEL9K_CUSTOM_USER_INDICATOR_ROOT_FOREGROUND
+    fi
+
+    echo -n "%F{$fg}$icon%f"
+}
