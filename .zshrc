@@ -1,5 +1,6 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/.local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH=/home/notrev/.oh-my-zsh
@@ -75,6 +76,10 @@ COMPLETION_WAITING_DOTS="true"
 # ssh
 # export SSH_KEY_PATH="~/.ssh/rsa_id"
 
+# =============
+# Aliases
+# =============
+
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -83,6 +88,7 @@ COMPLETION_WAITING_DOTS="true"
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias tmux="tmux -2"
 
 # =============
 # Powerlevel9k
@@ -109,22 +115,28 @@ POWERLEVEL9K_STATUS_OK_BACKGROUND="238"
 POWERLEVEL9K_VIRTUALENV_BACKGROUND="148"
 POWERLEVEL9K_VIRTUALENV_FOREGROUND="022"
 
-POWERLEVEL9K_USER_ICON="\uF415"
 POWERLEVEL9K_USER_DEFAULT_FOREGROUND="009"
 POWERLEVEL9K_USER_ROOT_FOREGROUND="011"
+POWERLEVEL9K_USER_ICON="%F{254}\uF007" # 
+POWERLEVEL9K_ROOT_ICON="%F{254}\uF21B" # 
 
-(( HOST_COLOR = (`hostname | wc -m`) % 15 ))        # color according to hostname length
-POWERLEVEL9K_HOST_ICON="\uF109"
+(( HOST_COLOR = (`hostname | wc -m`) % 15 )) # color according to hostname length
 POWERLEVEL9K_HOST_LOCAL_FOREGROUND="$HOST_COLOR"
 POWERLEVEL9K_HOST_REMOTE_FOREGROUND="$HOST_COLOR"
+POWERLEVEL9K_HOST_ICON="%F{254}\uF109" # 
+
+POWERLEVEL9K_LEFT_SUBSEGMENT_SEPARATOR="%F{238}"
+
+POWERLEVEL9K_CUSTOM_USER_INDICATOR="prompt_custom_user_indicator"
 
 POWERLEVEL9K_MODE="nerdfont-complete"
-POWERLEVEL9K_CUSTOM_USER_INDICATOR="prompt_custom_user_indicator"
-POWERLEVEL9K_PROMPT_ON_NEWLINE=false
-POWERLEVEL9K_RPROMPT_ON_NEWLINE=false
+POWERLEVEL9K_SHORTEN_DIR_LENGTH=3
+POWERLEVEL9K_SHORTEN_STRATEGY="truncate_middle"
+POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+#POWERLEVEL9K_RPROMPT_ON_NEWLINE=false
 POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
-POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX=" "
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(virtualenv user host dir vcs newline custom_user_indicator)
+POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="%K{0}%F{252} \uf120 %k%F{0}%f" # 
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(virtualenv user host dir vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status time)
 POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
 
