@@ -1,10 +1,18 @@
-export TERM="xterm-256color"
+# =============
+# Exports
+# =============
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/.local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH=/home/notrev/.oh-my-zsh
+
+# NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -20,7 +28,7 @@ ZSH_THEME="powerlevel9k/powerlevel9k"
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
 # Uncomment the following line to use case-sensitive completion.
-CASE_SENSITIVE="false"
+# CASE_SENSITIVE="false"
 
 # Uncomment the following line to use hyphen-insensitive completion. Case
 # sensitive completion must be off. _ and - will be interchangeable.
@@ -105,6 +113,7 @@ POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND=$POWERLEVEL9K_DIR_DEFAULT_FOREGROUND
 
 POWERLEVEL9K_TIME_BACKGROUND="000"
 POWERLEVEL9K_TIME_FOREGROUND="252"
+POWERLEVEL9K_TIME_FORMAT="%D{\uF64F %H:%M:%S}"
 
 POWERLEVEL9K_VCS_GIT_BITBUCKET_ICON=""
 POWERLEVEL9K_VCS_GIT_GITHUB_ICON=""
