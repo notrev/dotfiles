@@ -1,4 +1,4 @@
-# MY DOT FILES
+# DOTFILES
 Author: Éverton Arruda | http://earruda.eti.br
 
 These are my linux dotfiles, with all my preffered configurations.
@@ -8,6 +8,7 @@ It contains configurations for:
 * NeoVIM
 * Zsh + Oh-My-Zsh + Powerlevel9k theme
 * ROXterm
+* tmux
 
 ## Installation
 The installation script was only tested in Ubuntu GNU/Linux.
@@ -20,7 +21,7 @@ To run the installation script correctly you will need the following commands:
 * `fc-cache` - available in the pacakge **fontconfig**
 
 ### Running the installation script
-If the `install.sh` script is an executable, you can run:
+If the `install.sh` script is an executable (+x), you can run:
 
 ```
     $ ./install.sh
