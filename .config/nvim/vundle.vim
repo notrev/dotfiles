@@ -25,7 +25,9 @@ let g:lightline = {
     \ 'component_function': {
     \   'fugitive': 'LightLineFugitive',
     \   'relativepath': 'LightLineFilename',
-    \   'mode': 'LightLineMode'
+    \   'mode': 'LightLineMode',
+    \   'filetype': 'MyFiletype',
+    \   'fileformat': 'MyFileformat'
     \ },
     \ 'component_expand': {
     \   'readonly': 'LightLineReadonly'
@@ -76,6 +78,15 @@ endfunction
 function! LightLineMode()
     return lightline#mode()[0]
     " return winwidth(0) > 60 ? lightline#mode() : ''
+endfunction
+
+function! MyFiletype()
+  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' .
+         \ WebDevIconsGetFileTypeSymbol() : '') : ''
+endfunction
+
+function! MyFileformat()
+  return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
 endfunction
 
 " [PLUGIN] YouCompleteMe - Code autocompletion
@@ -152,3 +163,9 @@ command! -nargs=+ Fag call fzf#run({
     \ 'sink': function('AgHandler'),
     \ 'options': '+m',
     \ 'tmux_height': '60%'})
+
+" [PLUGIN] vim-devicons
+Plugin 'ryanoasis/vim-devicons'
+
+" [PLUGIN] tmux-focus-event
+Plugin 'tmux-plugins/vim-tmux-focus-events'
