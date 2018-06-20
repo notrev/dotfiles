@@ -13,12 +13,14 @@ FONTS_DIR=$HOME/.local/share/fonts/
 #FONTCONFIG_DIR=$HOME/.config/fontconfig/conf.d/
 NEOVIM_INSTALL_DIR=$HOME/.config/nvim
 VIM_UNDOFILES_DIR=$HOME/.vim-undo-files
+TMUX_DIR=$HOME/.tmux
 
 PPA_ROXTERM="ppa:h-realh/roxterm"
 PPA_NEOVIM="ppa:neovim-ppa/unstable"
 
 REPO_VUNDLE="http://github.com/VundleVim/Vundle.Vim"
 REPO_POWERLEVEL9K="https://github.com/bhilburn/powerlevel9k.git"
+REPO_TMUX_PLUGIN_MANAGER="https://github.com/tmux-plugins/tpm"
 
 OMZ_INSTALL_URL="https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh"
 FONT_MESLO_NERD="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/M/complete/Meslo%20LG%20M%20Regular%20Nerd%20Font%20Complete.otf"
@@ -133,6 +135,7 @@ echo "### Creating directories"
 mkdir -p $FONTS_DIR
 #mkdir -p $FONTCONFIG_DIR
 mkdir -p $VIM_UNDOFILES_DIR
+mkdir -p $TMUX_DIR
 
 ########################################
 ### Configure and Install submodules ###
@@ -175,10 +178,15 @@ sh -c "$(wget $OMZ_INSTALL_URL -O - | sed '/\s*env\s\s*zsh\s*/d')"
 
 # Zsh - powerlevel9k
 echo ""
-echo "### Installing POWERLEVEL9K for Oh-My-Zsh"
+echo "### Oh-My-Zsh theme installation: POWERLEVEL9K"
 git clone $REPO_POWERLEVEL9K $HOME/.oh-my-zsh/custom/themes/powerlevel9k
 
 # Zsh - Copying Zsh dot-files
 echo ""
 echo "### Copying Zsh dot-files"
 cp -r .zsh* $HOME
+
+# tmux - tmux plugin manager
+echo ""
+echo "### Cloning tmux plugin manager"
+git clone $REPO_TMUX_PLUGIN_MANAGER $TMUX_DIR/plugins/tpm
