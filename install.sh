@@ -22,6 +22,7 @@ REPO_VUNDLE="http://github.com/VundleVim/Vundle.Vim"
 REPO_POWERLEVEL9K="https://github.com/bhilburn/powerlevel9k.git"
 REPO_TMUX_PLUGIN_MANAGER="https://github.com/tmux-plugins/tpm"
 
+NVM_INSTALL_URL="https://raw.githubusercontent.com/creationix/nvm/master/install.sh"
 OMZ_INSTALL_URL="https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh"
 FONT_MESLO_NERD="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/M/complete/Meslo%20LG%20M%20Regular%20Nerd%20Font%20Complete.otf"
 
@@ -43,13 +44,15 @@ PKGS_LIST="build-essential \
             python3-dev \
             python3-pip \
             mono-devel \
-            editorconfig"
+            editorconfig \
+            silversearcher-ag" # for nvim's fzf
 
 # NodeJS Packages:
 #   - eslint : Used by VIM plugin for ECMAScript/Javascript syntax check
 #   - babel-eslint : Required by 'eslint'
 NODE_PKGS_LIST="eslint \
-                babel-eslint"
+                babel-eslint \
+                typescript"
 
 ########################
 ### Install packages ###
@@ -59,8 +62,7 @@ NODE_PKGS_LIST="eslint \
 # Mono is required to install Omnisharp, which is used in VIM's YouCompleteMe
 echo ""
 echo "### Preparations for installing 'mono-devel'"
-if [ ! -f /etc/apt/sources.list.d/mono-xamarin.list ]
-then
+if [ ! -f /etc/apt/sources.list.d/mono-xamarin.list ]; then
     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
                      --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
 
@@ -101,6 +103,16 @@ echo "### Updating alternatives: vim -> nvim"
 sudo update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 60
 sudo update-alternatives --config vim
 
+# Install NVM (NodeJS Version Manager)
+echo ""
+echo "### Installing NVM"
+wget -qO- $NVM_INSTALL_URL | zsh
+
+# Install Latest LTS versions of NodeJS and NPM
+echo ""
+echo "### Installing latest LTS versions of NodeJS and NPM"
+nvm install --lts --latest-npm
+
 # Install NodeJS packages
 echo ""
 echo "### Installing NodeJS packages with NPM"
@@ -120,11 +132,13 @@ sudo npm install -g $NODE_PKGS_LIST
 ###############################
 echo ""
 echo "### Copying dot-files to home directory"
-DOT_FILES=$(ls -a --ignore={.,..,README*,LICENSE*,install.sh,.git{i,m}*,.zsh*})
+DOT_FILES=$(ls -d dot.*)
 
 for FILE in $DOT_FILES
 do
-    cp -r $FILE $HOME
+    # Remove 'dot' prefix
+    FILE_NO_PREFIX=$(echo $FILE | sed -e 's;^dot;;')
+    cp -r $FILE $HOME/$FILE_NO_PREFIX
 done
 
 ##########################
@@ -140,12 +154,8 @@ mkdir -p $TMUX_DIR
 ########################################
 ### Configure and Install submodules ###
 ########################################
-
-# Download vundle - required to install VIM plugins
 echo ""
 echo "### Preparations for installing NeoVIM plugins"
-
-pip install --upgrade neovim
 pip2 install --upgrade neovim
 pip3 install --upgrade neovim
 
@@ -167,8 +177,7 @@ vim +PluginInstall +qall
 echo ""
 echo "### NeoVIM plugin installation: YouCompleteMe"
 pushd $NEOVIM_INSTALL_DIR/bundle/YouCompleteMe
-    git submodule update --init --recursive
-    ./install.sh --clang-completer --omnisharp-completer --tern-completer
+    python3 install.py --all
 popd
 
 # Zsh - Install Oh-My-Zsh (https://github.com/robbyrussell/oh-my-zsh)
