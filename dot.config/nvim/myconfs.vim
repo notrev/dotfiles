@@ -10,7 +10,7 @@
 " properly set to work with the Vim-related packages available in Debian.
 runtime! debian.vim
 
-" Editing preferences
+" Editor preferences
 syntax on
 set ts=4                    " Defines tab stop to 4 spaces
 set ai                      " Defines Auto-Indentation
@@ -20,7 +20,7 @@ set expandtab               " Changes shifttab for spaces
 set softtabstop=4           " let backspace delete indent
 set pastetoggle=<F2>        " Turns paste mode on or off. Used to paste text in vim
 "set background=light
-colorscheme monokai
+set guifont=MesloLGM\ Nerd\ Font\ RegularForPowerline\ 12
 
 " Searching preferences
 set hlsearch           " highlight the last used search pattern
@@ -35,6 +35,9 @@ set lazyredraw
 
 "let mapleader=','
 
+" Set colorscheme
+colorscheme monokai
+
 " Clear search highlight with ',h' keys in normal mode
 nmap ,h :nohlsearch<CR>
 
@@ -45,7 +48,7 @@ vnoremap ,y "+y
 vnoremap ,p "+p
 
 " Force write command
-command WW w !sudo tee %
+command! WW w !sudo tee %
 
 " Persistent undo
 if has('persistent_undo')
@@ -56,24 +59,33 @@ if has('persistent_undo')
 endif
 
 " Highlight collumn 81 for some types of file
-highlight ColumnMarker ctermbg=60 guibg=red
-let $columnMarkerFileTypes = 'sh,c,cpp,java,php,vim,javascript,python'
-augroup column_marker
-    au!
-    au FileType $columnMarkerFileTypes
-        \ let b:hlColumnMarker = matchadd('ColumnMarker', '\%101v', 100)
-    "au BufLeave,FileType $columnMarkerFileTypes
-    "    \ matchdelete(b:hlColumnMarker)
-    "    \ unlet b:hlColumnMarker
-augroup END
+"highlight ColumnMarker ctermbg=60 guibg=red
+"let $columnMarkerFileTypes = 'sh,c,cpp,java,php,vim,javascript,python'
+"augroup column_marker
+"    au!
+"    au FileType $columnMarkerFileTypes
+"        \ let b:hlColumnMarker = matchadd('ColumnMarker', '\%101v', 100)
+"    "au BufLeave,FileType $columnMarkerFileTypes
+"    "    \ matchdelete(b:hlColumnMarker)
+"    "    \ unlet b:hlColumnMarker
+"augroup END
 
 " Highlight trailing whitespaces and tabs
-highlight TrailingWhiteSpace ctermbg=red guibg=red ctermfg=white
-highlight Tabs ctermbg=red guibg=red ctermfg=white
+fun! HighlightUnwantedChars()
+    " Exceptions
+    if &ft =~ 'help'
+        return
+    endif
+    call matchadd('TrailingWhiteSpace', '\s\+$', 100)
+    call matchadd('UnwantedTabs', '\t', 100)
+endfun
+
 augroup unwanted_chars
+    highlight TrailingWhiteSpace ctermbg=red guibg=red ctermfg=white
+    highlight UnwantedTabs ctermbg=red guibg=red ctermfg=white
+
     au!
-    au BufEnter * call matchadd('TrailingWhiteSpace', '\s\+$', 100)
-    au BufEnter * call matchadd('Tabs', '\t', 100)
+    au BufEnter * call HighlightUnwantedChars()
     "autocmd BufLeave * call clearmatches() " <-- fishy. TODO: fix this
 augroup END
 
@@ -100,6 +112,6 @@ autocmd FileType vim                            let b:commentLeader = '" '
 noremap <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:commentLeader,'\/')<CR>/<CR>:nohlsearch<CR>
 noremap <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:commentLeader,'\/')<CR>//e<CR>:nohlsearch<CR>
 
-if has("autocmd")
+if has('autocmd')
     filetype plugin indent on
 endif

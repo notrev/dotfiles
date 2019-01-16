@@ -18,7 +18,6 @@ TMUX_DIR=$HOME/.tmux
 PPA_ROXTERM="ppa:h-realh/roxterm"
 PPA_NEOVIM="ppa:neovim-ppa/unstable"
 
-REPO_VUNDLE="http://github.com/VundleVim/Vundle.Vim"
 REPO_POWERLEVEL9K="https://github.com/bhilburn/powerlevel9k.git"
 REPO_TMUX_PLUGIN_MANAGER="https://github.com/tmux-plugins/tpm"
 
@@ -159,26 +158,9 @@ echo "### Preparations for installing NeoVIM plugins"
 pip2 install --upgrade neovim
 pip3 install --upgrade neovim
 
-pushd $NEOVIM_INSTALL_DIR/bundle/
-    if [ ! -d Vundle.vim ]; then
-        git clone $REPO_VUNDLE Vundle.vim
-    fi
-
-    pushd $NEOVIM_INSTALL_DIR/bundle/Vundle.vim
-        git checkout master
-    popd
-popd
-
 echo ""
 echo "### Installing NeoVIM plugins"
-vim +PluginInstall +qall
-
-# VIM - YouCompleteMe
-echo ""
-echo "### NeoVIM plugin installation: YouCompleteMe"
-pushd $NEOVIM_INSTALL_DIR/bundle/YouCompleteMe
-    python3 install.py --all
-popd
+vim +PlugInstall +qall
 
 # Zsh - Install Oh-My-Zsh (https://github.com/robbyrussell/oh-my-zsh)
 echo ""
