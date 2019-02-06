@@ -107,6 +107,12 @@ echo ""
 echo "### Installing NVM"
 wget -qO- $NVM_INSTALL_URL | zsh
 
+# Export NVM to $PATH and load it
+echo ""
+echo "### Loading NVM"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
 # Install Latest LTS versions of NodeJS and NPM
 echo ""
 echo "### Installing latest LTS versions of NodeJS and NPM"
@@ -133,8 +139,7 @@ echo ""
 echo "### Copying dot-files to home directory"
 DOT_FILES=$(ls -d dot.*)
 
-for FILE in $DOT_FILES
-do
+for FILE in $DOT_FILES; do
     # Remove 'dot' prefix
     FILE_NO_PREFIX=$(echo $FILE | sed -e 's;^dot;;')
     cp -r $FILE $HOME/$FILE_NO_PREFIX
@@ -172,12 +177,27 @@ echo ""
 echo "### Oh-My-Zsh theme installation: POWERLEVEL9K"
 git clone $REPO_POWERLEVEL9K $HOME/.oh-my-zsh/custom/themes/powerlevel9k
 
-# Zsh - Copying Zsh dot-files
+# Zsh - Copying Zsh dot-files to overwrite them if they were modified
 echo ""
 echo "### Copying Zsh dot-files"
-cp -r .zsh* $HOME
+DOT_FILES=$(ls -d dot.zsh*)
+
+for FILE in $DOT_FILES; do
+    # Remove 'dot' prefix
+    FILE_NO_PREFIX=$(echo $FILE | sed -e 's;^dot;;')
+    cp -r $FILE $HOME/$FILE_NO_PREFIX
+done
+
+# tmux - Install powerline for tmux
+echo ""
+echo "### Installing powerline for tmux"
+pip3 install powerline-status
 
 # tmux - tmux plugin manager
 echo ""
 echo "### Cloning tmux plugin manager"
 git clone $REPO_TMUX_PLUGIN_MANAGER $TMUX_DIR/plugins/tpm
+
+echo ""
+echo "### Installing tmux plugins"
+~/.tmux/plugins/tpm/bin/install_plugins
