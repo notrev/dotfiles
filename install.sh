@@ -18,12 +18,14 @@ TMUX_DIR=$HOME/.tmux
 PPA_ROXTERM="ppa:h-realh/roxterm"
 PPA_NEOVIM="ppa:neovim-ppa/unstable"
 
+REPO_ROXTERM_DISCO="deb http://ppa.launchpad.net/h-realh/roxterm/ubuntu disco main"
 REPO_POWERLEVEL9K="https://github.com/bhilburn/powerlevel9k.git"
 REPO_TMUX_PLUGIN_MANAGER="https://github.com/tmux-plugins/tpm"
 
+VIM_PLUG_URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 NVM_INSTALL_URL="https://raw.githubusercontent.com/creationix/nvm/master/install.sh"
 OMZ_INSTALL_URL="https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh"
-FONT_MESLO_NERD="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/M/complete/Meslo%20LG%20M%20Regular%20Nerd%20Font%20Complete.otf"
+FONT_MESLO_NERD="https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/Meslo/M/Regular/complete/Meslo%20LG%20M%20Regular%20Nerd%20Font%20Complete.ttf?raw=true"
 
 # Deb packages list
 PKGS_LIST="build-essential \
@@ -38,6 +40,7 @@ PKGS_LIST="build-essential \
             nodejs \
             npm \
             cmake \
+            golang-go \
             python-dev \
             python-pip \
             python3-dev \
@@ -80,7 +83,9 @@ fc-cache -vf $FONTS_DIR
 # Steps to install ROXTerm
 echo ""
 echo "### Preparations for installing 'roxterm'"
-sudo add-apt-repository $PPA_ROXTERM -y
+sudo add-apt-repository $PPA_ROXTERM -y || PPA_ROXTERM_FAIL=1
+[[ $PPA_ROXTERM_FAIL == 1 ]] && sudo rm /etc/apt/sources.list.d/h-realh-ubuntu-roxterm-eoan.list* \
+    && echo "$REPO_ROXTERM_DISCO" | sudo tee /etc/apt/sources.list.d/roxterm-disco.list
 
 # Steps to install NeoVIM
 echo ""
@@ -91,7 +96,7 @@ sudo add-apt-repository $PPA_NEOVIM -y
 echo ""
 echo "### Installing Debian packages with APT"
 sudo apt-get update
-sudo apt-get install $PKGS_LIST
+sudo apt-get install $PKGS_LIST -y
 
 # Set zsh as the main shell
 chsh -s $(which zsh)
@@ -139,11 +144,16 @@ echo ""
 echo "### Copying dot-files to home directory"
 DOT_FILES=$(ls -d dot.*)
 
+mkdir -p /tmp/home
 for FILE in $DOT_FILES; do
     # Remove 'dot' prefix
+    echo "cp $FILE /tmp/home"
     FILE_NO_PREFIX=$(echo $FILE | sed -e 's;^dot;;')
-    cp -r $FILE $HOME/$FILE_NO_PREFIX
+    cp -r $FILE /tmp/home/$FILE_NO_PREFIX
 done
+
+cp -rT /tmp/home $HOME
+rm -rf /tmp/home
 
 ##########################
 ### Create directories ###
@@ -154,6 +164,7 @@ mkdir -p $FONTS_DIR
 #mkdir -p $FONTCONFIG_DIR
 mkdir -p $VIM_UNDOFILES_DIR
 mkdir -p $TMUX_DIR
+mkdir -p $NEOVIM_INSTALL_DIR/autoload
 
 ########################################
 ### Configure and Install submodules ###
@@ -164,7 +175,8 @@ pip2 install --upgrade neovim
 pip3 install --upgrade neovim
 
 echo ""
-echo "### Installing NeoVIM plugins"
+echo "### Installing vim-plug and NeoVIM plugins"
+wget -O $NEOVIM_INSTALL_DIR/autoload/plug.vim $VIM_PLUG_URL
 vim +PlugInstall +qall
 
 # Zsh - Install Oh-My-Zsh (https://github.com/robbyrussell/oh-my-zsh)
