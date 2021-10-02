@@ -19,7 +19,7 @@ PPA_ROXTERM="ppa:h-realh/roxterm"
 PPA_NEOVIM="ppa:neovim-ppa/unstable"
 
 REPO_ROXTERM_DISCO="deb http://ppa.launchpad.net/h-realh/roxterm/ubuntu disco main"
-REPO_POWERLEVEL9K="https://github.com/bhilburn/powerlevel9k.git"
+REPO_POWERLEVEL10K="https://github.com/romkatv/powerlevel10k.git"
 REPO_TMUX_PLUGIN_MANAGER="https://github.com/tmux-plugins/tpm"
 
 VIM_PLUG_URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
@@ -47,7 +47,8 @@ PKGS_LIST="build-essential \
             python3-pip \
             mono-devel \
             editorconfig \
-            silversearcher-ag" # for nvim's fzf
+            silversearcher-ag \
+            urlview"
 
 # NodeJS Packages:
 #   - eslint : Used by VIM plugin for ECMAScript/Javascript syntax check
@@ -186,8 +187,8 @@ sh -c "$(wget $OMZ_INSTALL_URL -O - | sed '/\s*env\s\s*zsh\s*/d')"
 
 # Zsh - powerlevel9k
 echo ""
-echo "### Oh-My-Zsh theme installation: POWERLEVEL9K"
-git clone $REPO_POWERLEVEL9K $HOME/.oh-my-zsh/custom/themes/powerlevel9k
+echo "### Oh-My-Zsh theme installation: POWERLEVEL10K"
+git clone --depth=1 $REPO_POWERLEVEL10K ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
 # Zsh - Copying Zsh dot-files to overwrite them if they were modified
 echo ""
