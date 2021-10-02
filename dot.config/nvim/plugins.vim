@@ -41,7 +41,7 @@ let g:lightline = {
     \ }
 
 function! LightLineModified()
-    if &filetype == "help"
+    if index(["help", "nerdtree"], &filetype) >= 0
         return ""
     elseif &modified
         return "+"
@@ -53,7 +53,7 @@ function! LightLineModified()
 endfunction
 
 function! LightLineReadonly()
-    if &filetype == "help"
+    if index(["help"], &filetype) >= 0
         return ""
     elseif &readonly
         return ""
@@ -71,30 +71,52 @@ function! LightLineFugitive()
 endfunction
 
 function! LightLineFilename()
-    return ('' != LightLineReadonly() ? LightLineReadonly() . ' ' : '') .
-            \ ('' != expand('%f') ? fnamemodify(expand("%"), ":~:."): '[No Name]') .
+    return ('' != expand('%f') ? fnamemodify(expand("%"), ":~:."): '[No Name]') .
             \ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
 endfunction
 
+" itchyny/lightline.vim: Show plugin name instead of normal as the mode
 function! LightLineMode()
-    return lightline#mode()[0]
-    " return winwidth(0) > 60 ? lightline#mode() : ''
+    return expand('%:t') ==# '__Tagbar__' ? 'Tagbar' :
+       \ expand('%:t') ==# 'ControlP' ? 'CtrlP' :
+       \ &filetype ==# 'nerdtree' ?  'NERDTree' :
+       \ &filetype ==# 'unite' ? 'Unite' :
+       \ &filetype ==# 'vimfiler' ? 'VimFiler' :
+       \ &filetype ==# 'vimshell' ? 'VimShell' :
+       \ lightline#mode()[0]
+endfunction
+
+function! LightlineLineInfo()
+    if index(["nerdtree"], &filetype) >= 0
+        return ""
+    else
+        return line(".").":". col(".")
+    endif
 endfunction
 
 function! MyFiletype()
-  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' .
+    return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' .
          \ WebDevIconsGetFileTypeSymbol() : '') : ''
 endfunction
 
 function! MyFileformat()
-  return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
+    if index(["nerdtree"], &filetype) >= 0
+        return ""
+    else
+        return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
+    endif
 endfunction
 
 " [PLUGIN] YouCompleteMe - Code autocompletion
-Plug 'Valloric/YouCompleteMe', { 'do': 'rm third_party/ycmd/third_party/tern_runtime/node_modules ; python3 install.py --all' }
+"Plug 'Valloric/YouCompleteMe', { 'do': 'rm third_party/ycmd/third_party/tern_runtime/node_modules ; python3 install.py --all' }
 
 " Javascript GoTo keymapping
-autocmd FileType javascript nmap <buffer> <C-]> :YcmCompleter GoTo<CR>
+"autocmd FileType javascript nmap <buffer> <C-]> :YcmCompleter GoTo<CR>
+
+" [PLUGIN] deoplete - Code completion
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
+let g:deoplete#enable_at_startup = 1
 
 " [PLUGIN] Emmet - HTML expansion
 Plug 'mattn/emmet-vim', { 'for': 'html' }
@@ -108,7 +130,28 @@ let g:javascript_plugin_jsdoc = 1
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 
 map ,n :NERDTreeToggle<CR>
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
+" Close the tab if NERDTree is the only window remaining in it.
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
+" Start NERDTree when Vim is started without file arguments.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
+
+" Start NERDTree when Vim starts with a directory argument.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
+    \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
+
+" Open the existing NERDTree on each new tab.
+autocmd BufWinEnter * if getcmdwintype() == '' && exists(":NERDTreeMirror") | silent NERDTreeMirror | endif
+
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
 " [PLUGIN] Neomake
 Plug 'neomake/neomake'
@@ -176,6 +219,31 @@ Plug 'ryanoasis/vim-devicons'
 
 " [PLUGIN] tmux-focus-event
 Plug 'tmux-plugins/vim-tmux-focus-events'
+
+" [PLUGIN] python-mode
+Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
+let g:pymode_options_max_line_length = 100
+let g:pymode_syntax = 1
+let g:pymode_syntax_all = 1
+
+let g:pymode_rope_completion = 1
+let g:pymode_rope_complete_on_dot = 1
+let g:pymode_rope_autoimport = 1
+let g:pymode_rope_autoimport_import_after_complete = 1
+
+let g:pymode_lint_cwindow = 0
+let g:pymode_lint_todo_symbol = '✔'
+let g:pymode_lint_comment_symbol = '➤'
+let g:pymode_lint_visual_symbol = 'RR'
+let g:pymode_lint_error_symbol = '✖' "default: EE
+let g:pymode_lint_info_symbol = 'ℹ' "default: II
+let g:pymode_lint_pyflakes_symbol = '🐍' "default: FF
+
+" [PLUGIN] black
+Plug 'psf/black', { 'branch': 'stable' }
+
+" run black when saving file
+"autocmd BufWritePre *.py execute ':Black'
 
 " End plugin manager section
 call plug#end()
