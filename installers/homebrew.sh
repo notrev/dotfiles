@@ -18,7 +18,9 @@ bash /tmp/brew-installer.sh
 
 echo ""
 echo "### Setting up brew in the environment"
-echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $HOME/.zprofile
+if [[ -f $HOME/.zprofile ]] && [[ -z $(cat $HOME/.zprofile | grep "brew shellenv") ]]; then
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $HOME/.zprofile
+fi
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 echo "Done!"
