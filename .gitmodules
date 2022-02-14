@@ -1,3 +1,0 @@
-[submodule "dot.config/kitty/themes"]
-	path = dot.config/kitty/themes
-	url = git@github.com:dexpota/kitty-themes.git

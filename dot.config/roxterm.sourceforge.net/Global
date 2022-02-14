@@ -1,8 +1,0 @@
-[roxterm options]
-profile=Notrev
-colour_scheme=NoTango
-encoding=UTF-8
-warn_close=2
-only_warn_running=1
-prefer_dark_theme=1
-shortcut_scheme=Notrev
