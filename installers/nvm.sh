@@ -10,9 +10,9 @@ NVM_INSTALLER_URL="https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.
 ### Installation ###
 ########################
 
-Install Node Version Manager
+# Install Node Version Manager
 echo ""
-echo "### Installing homebrew"
+echo "### Installing nvm"
 curl -fsSLo /tmp/nvm-installer.sh $NVM_INSTALLER_URL
 bash /tmp/nvm-installer.sh
 
